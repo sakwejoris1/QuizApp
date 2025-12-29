@@ -1,0 +1,91 @@
+
+*{
+    margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+}
+:root {
+            --primary-color: #4f46e5;
+            --secondary-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --dark-color: #1f2937;
+            --light-color: #f9fafb;
+            --border-color: #e5e7eb;
+            --correct-color: #10b981;
+            --incorrect-color: #ef4444;
+            --selected-color: #6366f1;
+            --science-blue: #3b82f6;
+            --science-light: #dbeafe;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+body {
+            font-family: 'Poppins', sans-serif;
+             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe279 100%);
+            min-height: 100vh;
+            color: var(--dark-color);
+        }
+.main{
+    padding: 7px;
+    background-color: var(--light-color);
+    width: 50vh;
+    height:80vh;
+    border-radius: 9px;
+}
+.container{
+    display: flex;
+    justify-content: space-between;
+    margin-left: 20vh;
+    margin-right: 20vh;
+    
+}
+ img{
+   width: 48vh;
+   height: 50vh;
+   border-radius: 9px;
+   object-fit: cover;
+   transition: transform.4s;
+
+   
+
+        }
+  img:hover{
+    transform: scale(1.05);
+  cursor: pointer;
+  }      
+        p{
+            text-align: center;
+            font-weight: bold;
+            color: blue;
+            
+
+        }
+button{
+    padding: 7px;
+    width: 40vh;
+    height:8vh;
+    margin-left: 4vh;
+    border-radius: 5px;
+    border: 0px;
+    color: white;
+    font-weight: bold;
+    background-color:blue;
+}
+button:hover{
+    cursor: pointer;
+}
+h1{
+    text-align: center;
+    font-weight: bold;
+    color:blue;
+    font-size: 40px;
+}
+h2{
+    text-align: center;
+color: rgba(0, 0, 0, 0.288);
+font-size: 19px;
+font-weight: lighter;
+letter-spacing: 2px;
+}
