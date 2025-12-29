@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizNova - Test Your Knowledge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="h.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <i class="fas fa-brain"></i>
+                <span>Quiz<span class="logo-highlight">Nova</span></span>
+            </a>
+            
+            <div class="nav-menu" id="navMenu">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#categories" class="nav-link">Categories</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#how-it-works" class="nav-link">How It Works</a>
+                <a href="#testimonials" class="nav-link">Testimonials</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="btn btn-login">Log In</button>
+                <button class="btn btn-primary btn-signup">Sign Up Free</button>
+            </div>
+            
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">Challenge Your <span class="text-gradient">Knowledge</span></h1>
+                <p class="hero-subtitle">Join thousands of players worldwide in the ultimate quiz experience. Test your skills across hundreds of categories and climb the leaderboards!</p>
+                
+                <div class="hero-stats">
+                    <div class="stat">
+                        <h3>50K+</h3>
+                        <p>Active Players</p>
+                    </div>
+                    <div class="stat">
+                        <h3>500+</h3>
+                        <p>Quiz Categories</p>
+                    </div>
+                    <div class="stat">
+                        <h3>1M+</h3>
+                        <p>Questions</p>
+                    </div>
+                </div>
+                
+                <div class="hero-cta">
+                    <button class="btn btn-primary btn-lg">
+                        <i class="fas fa-play-circle"></i> Start Quiz Now
+                    </button>
+                    <button class="btn btn-outline btn-lg">
+                        <i class="fas fa-eye"></i> User Dashboard 
+                    </button>
+                </div>
+            </div>
+            
+            <div class="hero-image">
+                <div class="floating-quiz-card">
+                    <div class="quiz-card-header">
+                        <h4>Daily Challenge</h4>
+                        <div class="timer">
+                            <i class="fas fa-clock"></i> 02:30
+                        </div>
+                    </div>
+                    <div class="quiz-card-question">
+                        <p>Which planet is known as the Red Planet?</p>
+                    </div>
+                    <div class="quiz-card-options">
+                        <div class="option">Venus</div>
+                        <div class="option correct">Mars</div>
+                        <div class="option">Jupiter</div>
+                        <div class="option">Saturn</div>
+                    </div>
+                    <div class="quiz-card-footer">
+                        <span>Difficulty: <span class="difficulty medium">Medium</span></span>
+                        <span>200 Players Today</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories" id="categories">
+        <div class="container">
+            <div class="section-header">
+                <h2>Popular <span class="text-gradient">Categories</span></h2>
+                <p>Explore quizzes from a wide range of topics</p>
+            </div>
+            
+            <div class="categories-grid">
+                <div class="category-card" data-category="science">
+                    <div class="category-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3>Science</h3>
+                    <p>Physics, Chemistry, Biology</p>
+                    <span class="quiz-count">1,200 Quizzes</span>
+                </div>
+                
+                <div class="category-card" data-category="history">
+                    <div class="category-icon">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h3>History</h3>
+                    <p>Ancient to Modern History</p>
+                    <span class="quiz-count">850 Quizzes</span>
+                </div>
+                
+                <div class="category-card" data-category="geography">
+                    <div class="category-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <h3>Geography</h3>
+                    <p>Countries, Capitals, Landmarks</p>
+                    <span class="quiz-count">950 Quizzes</span>
+                </div>
+                
+                <div class="category-card" data-category="entertainment">
+                    <div class="category-icon">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h3>Entertainment</h3>
+                    <p>Movies, Music, TV Shows</p>
+                    <span class="quiz-count">2,100 Quizzes</span>
+                </div>
+                
+                <div class="category-card" data-category="sports">
+                    <div class="category-icon">
+                        <i class="fas fa-futbol"></i>
+                    </div>
+                    <h3>Sports</h3>
+                    <p>Football, Basketball, Tennis</p>
+                    <span class="quiz-count">750 Quizzes</span>
+                </div>
+                
+                <div class="category-card" data-category="technology">
+                    <div class="category-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3>Technology</h3>
+                    <p>Programming, Gadgets, AI</p>
+                    <span class="quiz-count">1,500 Quizzes</span>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button class="btn btn-secondary">
+                    <i class="fas fa-list"></i> View All Categories
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Choose <span class="text-gradient">QuizNova</span></h2>
+                <p>Experience the ultimate quiz platform with amazing features</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>Leaderboards</h3>
+                    <p>Compete with players worldwide and climb to the top of our global leaderboards.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Multiplayer</h3>
+                    <p>Challenge your friends in real-time quiz battles or join public multiplayer rooms.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <h3>Achievements</h3>
+                    <p>Earn badges, trophies, and certificates as you progress through different quiz levels.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Progress Tracking</h3>
+                    <p>Track your improvement with detailed analytics and performance reports.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobile Friendly</h3>
+                    <p>Play quizzes on any device - desktop, tablet, or mobile with seamless experience.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Daily Challenges</h3>
+                    <p>New challenges every day with special rewards for top performers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2>How <span class="text-gradient">It Works</span></h2>
+                <p>Get started in just a few simple steps</p>
+            </div>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Sign Up Free</h3>
+                        <p>Create your account in less than a minute. No credit card required.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Choose Category</h3>
+                        <p>Select from hundreds of quiz categories that match your interests.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Take Quiz</h3>
+                        <p>Answer questions within the time limit. Multiple choice, true/false, and more.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Get Results</h3>
+                        <p>See your score, compare with others, and track your progress over time.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>What <span class="text-gradient">Players Say</span></h2>
+                <p>Join thousands of satisfied users worldwide</p>
+            </div>
+            
+            <div class="testimonials-slider">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"QuizNova has completely changed how I learn. The competitive aspect makes it fun to expand my knowledge daily!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="img/WhatsApp Image 2025-12-27 at 03.11.21.jpeg" alt="Dave weby">
+                        <div>
+                            <h4>Dave weby</h4>
+                            <p>Teacher & Quiz Enthusiast</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"As a student, this platform has helped me prepare for exams in a fun way. The science quizzes are especially helpful!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="img/li.jpeg" alt="Ebot Elizabeth">
+                        <div>
+                            <h4>Ebot Elizabeth</h4>
+                            <p>Ebot Elizabeth Student</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"Our team uses QuizNova for Friday trivia sessions. It's a great team-building activity with competitive features!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="img/e.jpeg" alt="Epie Kajeta">
+                        <div>
+                            <h4>Epie Kajeta</h4>
+                            <p>Team Lead, Tech Company</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container cta-container">
+            <div class="cta-content">
+                <h2>Ready to Test Your Knowledge?</h2>
+                <p>Join QuizNova today and start your journey to become a quiz champion!</p>
+            </div>
+            <div class="cta-buttons">
+                <button class="btn btn-primary btn-lg">
+                    <i class="fas fa-user-plus"></i> Sign Up Free
+                </button>
+                <button class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-question-circle"></i> Learn More
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="#" class="logo">
+                        <i class="fas fa-brain"></i>
+                        <span>Quiz<span class="logo-highlight">Nova</span></span>
+                    </a>
+                    <p>The ultimate platform to test your knowledge, compete with friends, and learn something new every day.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Categories</h4>
+                    <ul>
+                        <li><a href="#">Science & Nature</a></li>
+                        <li><a href="#">History & Geography</a></li>
+                        <li><a href="#">Entertainment</a></li>
+                        <li><a href="#">Sports & Games</a></li>
+                        <li><a href="#">Technology</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Affiliate Program</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Community Guidelines</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 QuizNova. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Use</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+</body>
+</html>
