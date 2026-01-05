@@ -1,0 +1,307 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizNova - Test Your Knowledge</title>
+
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/h.css' %}">
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="container nav-container">
+        <a href="#" class="logo">
+            <i class="fas fa-brain"></i>
+            <span>Quiz<span class="logo-highlight">Nova</span></span>
+        </a>
+
+        <div class="nav-menu" id="navMenu">
+            <a href="{#home}" class="nav-link active">Home</a>
+            <a href="#categories" class="nav-link">Categories</a>
+            <a href="#features" class="nav-link">Features</a>
+            <a href="#how-it-works" class="nav-link">How It Works</a>
+            <a href="#testimonials" class="nav-link">Testimonials</a>
+            <a href="#contact" class="nav-link">Contact</a>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="{% url 'login' %}" class="btn btn-login">Log In</a>
+            <a href="{% url 'signup' %}" class="btn btn-primary btn-signup">Sign Up Free</a>
+        </div>
+
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero" id="home">
+    <div class="container hero-container">
+        <div class="hero-content">
+            <h1 class="hero-title">Challenge Your <span class="text-gradient">Knowledge</span></h1>
+            <p class="hero-subtitle">
+                Join thousands of players worldwide in the ultimate quiz experience.
+            </p>
+
+            <div class="hero-stats">
+                <div class="stat"><h3>50K+</h3><p>Active Players</p></div>
+                <div class="stat"><h3>500+</h3><p>Quiz Categories</p></div>
+                <div class="stat"><h3>1M+</h3><p>Questions</p></div>
+            </div>
+
+            <div class="hero-cta">
+                <a href="#" class="btn btn-primary btn-lg">
+                    <i class="fas fa-play-circle"></i> Start Quiz Now
+                </a>
+                <a href="{% url 'UserDashboard' %}" class="btn btn-outline btn-lg">
+                    <i class="fas fa-eye"></i> User Dashboard
+                </a>
+            </div>
+        </div>
+
+        <div class="hero-image">
+            <div class="floating-quiz-card">
+                <div class="quiz-card-header">
+                    <h4>Daily Challenge</h4>
+                    <div class="timer"><i class="fas fa-clock"></i> 02:30</div>
+                </div>
+                <p>Which planet is known as the Red Planet?</p>
+                <div class="quiz-card-options">
+                    <div class="option">Venus</div>
+                    <div class="option correct">Mars</div>
+                    <div class="option">Jupiter</div>
+                    <div class="option">Saturn</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% load static %}
+
+<!-- Categories Section -->
+<section class="categories" id="categories">
+    <div class="container">
+        <div class="section-header">
+            <h2>Popular <span class="text-gradient">Categories</span></h2>
+            <p>Explore quizzes from a wide range of topics</p>
+        </div>
+        
+        <div class="categories-grid">
+            <div class="category-card" data-category="science">
+                <div class="category-icon">
+                    <i class="fas fa-flask"></i>
+                </div>
+                <h3> Science</h3>
+                <p>Physics, Chemistry, Biology</p>
+                <span class="quiz-count">1,200 Quizzes</span>
+                
+            </div>
+            
+            <div class="category-card" data-category="history">
+                <div class="category-icon">
+                    <i class="fas fa-landmark"></i>
+                </div>
+                <h3>History</h3>
+                <p>Ancient to Modern History</p>
+                <span class="quiz-count">850 Quizzes</span>
+            </div>
+            
+            <div class="category-card" data-category="geography">
+                <div class="category-icon">
+                    <i class="fas fa-globe-americas"></i>
+                </div>
+                <h3>Geography</h3>
+                <p>Countries, Capitals, Landmarks</p>
+                <span class="quiz-count">950 Quizzes</span>
+            </div>
+            
+            <div class="category-card" data-category="entertainment">
+                <div class="category-icon">
+                    <i class="fas fa-film"></i>
+                </div>
+                <h3>Entertainment</h3>
+                <p>Movies, Music, TV Shows</p>
+                <span class="quiz-count">2,100 Quizzes</span>
+            </div>
+            
+            <div class="category-card" data-category="sports">
+                <div class="category-icon">
+                    <i class="fas fa-futbol"></i>
+                </div>
+                <h3>Sports</h3>
+                <p>Football, Basketball, Tennis</p>
+                <span class="quiz-count">750 Quizzes</span>
+            </div>
+            
+            <div class="category-card" data-category="technology">
+                <div class="category-icon">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <h3>Technology</h3>
+                <p>Programming, Gadgets, AI</p>
+                <span class="quiz-count">1,500 Quizzes</span>
+            </div>
+        </div>
+        
+        <div class="text-center">
+        <a href="{% url 'quiz_categories' %}" class="btn btn-secondary">
+    <i class="fas fa-list"></i> View All Categories
+</a>
+
+
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features" id="features">
+    <div class="container">
+        <div class="section-header">
+            <h2>Why Choose <span class="text-gradient">QuizNova</span></h2>
+            <p>Experience the ultimate quiz platform with amazing features</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3>Leaderboards</h3>
+                <p>Compete with players worldwide and climb to the top of our global leaderboards.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Multiplayer</h3>
+                <p>Challenge your friends in real-time quiz battles or join public multiplayer rooms.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-medal"></i>
+                </div>
+                <h3>Achievements</h3>
+                <p>Earn badges, trophies, and certificates as you progress through different quiz levels.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Progress Tracking</h3>
+                <p>Track your improvement with detailed analytics and performance reports.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Mobile Friendly</h3>
+                <p>Play quizzes on any device - desktop, tablet, or mobile with seamless experience.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3>Daily Challenges</h3>
+                <p>New challenges every day with special rewards for top performers.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-it-works" id="how-it-works">
+    <div class="container">
+        <div class="section-header">
+            <h2>How <span class="text-gradient">It Works</span></h2>
+            <p>Get started in just a few simple steps</p>
+        </div>
+        
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Sign Up Free</h3>
+                    <p>Create your account in less than a minute. No credit card required.</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Choose Category</h3>
+                    <p>Select from hundreds of quiz categories that match your interests.</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Take Quiz</h3>
+                    <p>Answer questions within the time limit. Multiple choice, true/false, and more.</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Get Results</h3>
+                    <p>See your score, compare with others, and track your progress over time.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials" id="testimonials">
+    <div class="container">
+        <div class="testimonial-card">
+            <p>"QuizNova has completely changed how I learn."</p>
+            <div class="testimonial-author">
+                <img src="{% static 'img/WhatsApp Image 2025-12-27 at 03.11.21.jpeg' %}">
+                <h4>Dave Weby</h4>
+            </div>
+        </div>
+
+        <div class="testimonial-card">
+            <p>"Amazing platform for students!"</p>
+            <div class="testimonial-author">
+                <img src="{% static 'img/li.jpeg' %}">
+                <h4>Ebot Elizabeth</h4>
+            </div>
+        </div>
+
+        <div class="testimonial-card">
+            <p>"Great for team trivia."</p>
+            <div class="testimonial-author">
+                <img src="{% static 'img/e.jpeg' %}">
+                <h4>Epie Kajeta</h4>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer" id="contact">
+    <div class="container">
+        <p>&copy; 2025 QuizNova. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

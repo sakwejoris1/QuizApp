@@ -1,0 +1,953 @@
+      :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --dark-color: #1f2937;
+            --light-color: #f9fafb;
+            --border-color: #e5e7eb;
+            --correct-color: #10b981;
+            --incorrect-color: #ef4444;
+            --selected-color: #6366f1;
+            --geography-green: blue;
+            --geography-light: #d1fae5;
+            --geography-dark:blue;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(blue,blue);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            min-height: 100vh;
+            color: var(--dark-color);
+        }
+
+        /* Header */
+        .quiz-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 3px solid var(--geography-green);
+        }
+
+        .quiz-info {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .category-display {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            background: var(--gradient);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .category-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--geography-dark);
+        }
+
+        .quiz-timer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--geography-light);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--geography-dark);
+            border: 2px solid var(--geography-green);
+        }
+
+        .timer-critical {
+            color: var(--danger-color) !important;
+            animation: pulse 1s infinite;
+            border-color: var(--danger-color);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .timer-icon {
+            color: var(--geography-green);
+        }
+
+        /* Main Quiz Container */
+        .quiz-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Progress Section */
+        .quiz-progress {
+            background: white;
+            border-radius: 15px;
+            padding: 25px 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            border: 2px solid var(--geography-light);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .question-count {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .score-display {
+            background: var(--gradient);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .progress-bar {
+            height: 12px;
+            background-color: #e5e7eb;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 6px;
+            width: 0%;
+            transition: width 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                transparent 25%, 
+                rgba(255, 255, 255, 0.3) 50%, 
+                transparent 75%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Question Card */
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 30px;
+            border: 2px solid var(--geography-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .question-number {
+            background: var(--gradient);
+            color: white;
+            padding: 8px 25px;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .question-hint {
+            background: #fef3c7;
+            color: var(--warning-color);
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .question-text {
+            font-size: 1.6rem;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            color: var(--dark-color);
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border-left: 4px solid var(--geography-green);
+        }
+
+        .question-image {
+            width: 100%;
+            max-height: 300px;
+            border-radius: 12px;
+            margin: 20px 0;
+            object-fit: cover;
+            border: 3px solid var(--geography-light);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Options Section */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .option-item {
+            padding: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: white;
+        }
+
+        .option-item:hover {
+            border-color: var(--geography-green);
+            background-color: var(--geography-light);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.1);
+        }
+
+        .option-item.selected {
+            border-color: var(--geography-green);
+            background-color: var(--geography-light);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+        }
+
+        .option-item.correct {
+            border-color: var(--correct-color);
+            background-color: #d1fae5;
+            animation: correctPulse 0.5s ease;
+        }
+
+        .option-item.incorrect {
+            border-color: var(--incorrect-color);
+            background-color: #fee2e2;
+            animation: incorrectShake 0.5s ease;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes incorrectShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .option-marker {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            background: #f3f4f6;
+            color: var(--dark-color);
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .option-item.selected .option-marker {
+            background: var(--geography-green);
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .option-item.correct .option-marker {
+            background: var(--correct-color);
+            color: white;
+        }
+
+        .option-item.incorrect .option-marker {
+            background: var(--incorrect-color);
+            color: white;
+        }
+
+        .option-text {
+            flex: 1;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .option-flag {
+            font-size: 1.8rem;
+            margin-left: 10px;
+        }
+
+        .option-explanation {
+            grid-column: 1 / -1;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 10px;
+            margin-top: 10px;
+            display: none;
+            border-left: 4px solid var(--warning-color);
+            animation: slideDown 0.3s ease;
+        }
+
+        .option-item.correct .option-explanation,
+        .option-item.incorrect .option-explanation {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Navigation Buttons */
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .nav-btn {
+            padding: 15px 30px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-prev {
+            background-color: #f3f4f6;
+            color: var(--dark-color);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-prev:hover:not(:disabled) {
+            background-color: #e5e7eb;
+            transform: translateY(-2px);
+        }
+
+        .btn-next {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .btn-next:hover:not(:disabled) {
+            background: linear-gradient(135deg, #0da271 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-submit {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            background-color: #0da271;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Quiz Actions */
+        .quiz-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .action-btn {
+            padding: 12px 20px;
+            background-color: white;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            box-shadow: var(--shadow);
+        }
+
+        .action-btn:hover {
+            background-color: var(--geography-light);
+            border-color: var(--geography-green);
+            transform: translateY(-2px);
+        }
+
+        .action-btn.active {
+            background-color: var(--geography-light);
+            border-color: var(--geography-green);
+            color: var(--geography-dark);
+        }
+
+        /* Results Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            overflow: hidden;
+            border: 3px solid var(--geography-green);
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            background: var(--gradient);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-header::before {
+            content: '🗺️';
+            position: absolute;
+            font-size: 8rem;
+            opacity: 0.1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .modal-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal-body {
+            padding: 40px;
+        }
+
+        .result-summary {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            color: white;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+            animation: circlePulse 2s infinite;
+        }
+
+        @keyframes circlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .score-percentage {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .score-text {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .result-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .result-stat {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid var(--geography-light);
+            transition: all 0.3s ease;
+        }
+
+        .result-stat:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.1);
+        }
+
+        .result-stat h3 {
+            font-size: 2rem;
+            color: var(--geography-green);
+            margin-bottom: 5px;
+        }
+
+        .result-stat p {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .result-feedback {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f0f9ff;
+            border-radius: 12px;
+            border-left: 4px solid var(--geography-green);
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-top: 10px;
+            animation: badgeFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes badgeFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-retry {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .btn-retry:hover {
+            background: linear-gradient(135deg, #0da271 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-review {
+            background-color: #f3f4f6;
+            color: var(--dark-color);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-review:hover {
+            background-color: #e5e7eb;
+            transform: translateY(-2px);
+        }
+
+        .btn-home {
+            background-color: var(--geography-green);
+            color: white;
+        }
+
+        .btn-home:hover {
+            background-color: #0da271;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Geography Stats */
+        .geography-stats {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            border: 2px solid var(--geography-light);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 10px;
+            border: 1px solid var(--geography-light);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--geography-green);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .stat-icon {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--geography-green);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .quiz-header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .quiz-info {
+                flex-direction: column;
+                gap: 15px;
+                width: 100%;
+            }
+
+            .quiz-container {
+                padding: 0 15px;
+            }
+
+            .question-card {
+                padding: 25px;
+            }
+
+            .question-text {
+                font-size: 1.4rem;
+            }
+
+            .quiz-navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+
+            .result-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .geography-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .question-text {
+                font-size: 1.2rem;
+            }
+
+            .option-item {
+                padding: 15px;
+                gap: 10px;
+            }
+
+            .option-marker {
+                width: 30px;
+                height: 30px;
+                font-size: 0.9rem;
+            }
+
+            .modal-header {
+                padding: 30px 20px;
+            }
+
+            .modal-header h2 {
+                font-size: 2rem;
+            }
+
+            .score-circle {
+                width: 120px;
+                height: 120px;
+            }
+
+            .score-percentage {
+                font-size: 2rem;
+            }
+        }
+
+        /* Geography Theme Elements */
+        .geography-decoration {
+            position: fixed;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .globe {
+            top: 10%;
+            left: 5%;
+            font-size: 8rem;
+            animation: spin 20s linear infinite;
+        }
+
+        .mountain {
+            bottom: 10%;
+            right: 5%;
+            font-size: 6rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .geography-fact {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid var(--geography-green);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .geography-fact i {
+            color: var(--geography-green);
+            font-size: 1.5rem;
+        }
+
+        .fact-content {
+            flex: 1;
+        }
+
+        .fact-title {
+            font-weight: 600;
+            color: var(--geography-dark);
+            margin-bottom: 5px;
+        }
+
+        .fact-text {
+            font-size: 0.95rem;
+            color: #374151;
+        }
+
+        /* Map Visualization */
+        .map-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid var(--geography-light);
+            display: none;
+        }
+
+        .map-container.active {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        .map-title {
+            font-weight: 600;
+            color: var(--geography-dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 10px;
+        }
+
+        .map-cell {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .map-cell:hover {
+            transform: scale(1.1);
+        }
+
+        .map-cell.continent {
+            background: var(--geography-light);
+            color: var(--geography-dark);
+        }
+
+        .map-cell.ocean {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .map-cell.selected {
+            border-color: var(--geography-green);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        /* World Regions Display */
+        .region-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .region-tag {
+            background: var(--geography-light);
+            color: var(--geography-dark);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .region-tag i {
+            font-size: 0.9rem;
+        }

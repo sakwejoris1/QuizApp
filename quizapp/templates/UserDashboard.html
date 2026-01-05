@@ -1,0 +1,101 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard | QuizMaster</title>
+    <link rel="stylesheet" href="{% static 'css/User Dashboard.css' %}">
+</head>
+<body>
+    <div class="container">
+    <aside>
+        <div class="profile-section">
+            <div class="avatar" style="display: flex; align-items: center; justify-content: center; font-weight: bold;">MF</div>
+            <h3>Mosco Fuafuelaka</h3>
+            <p style="color: var(--secondary);">Level 14 - Scholar</p>
+        </div>
+        <nav>
+            <p><strong>Current Goal:</strong></p>
+            <p style="font-size: 0.9rem;">Mastering python Fundamentals</p>
+        </nav>
+    </aside>
+     <main>
+        <div class="header-title">
+            <h1>Welcome back, Mosco! 👋</h1>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <p>Avg Score</p>
+                <div class="stat-value">88%</div>
+            </div>
+            <div class="stat-card">
+                <p>Quizzes Done</p>
+                <div class="stat-value">42</div>
+            </div>
+            <div class="stat-card" style="border-bottom: 3px solid var(--warning);">
+                <p>Current Streak</p>
+                <div class="stat-value">7 Days 🔥</div>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h3>Recent Quiz History</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Quiz Name</th>
+                        <th>Date</th>
+                        <th>Score</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Organic Chemistry I</td>
+                        <td>Oct 24, 2025</td>
+                        <td style="color: var(--success); font-weight: bold;">92%</td>
+                        <td><button class="btn-review">Review</button></td>
+                    </tr>
+                    <tr>
+                        <td>World Geography</td>
+                        <td>Oct 22, 2025</td>
+                        <td style="color: var(--warning); font-weight: bold;">74%</td>
+                        <td><button class="btn-review">Review</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="content-card">
+            <h3>Achievements</h3>
+            <div class="badge-grid">
+                <div class="badge">☀️ Early Bird</div>
+                <div class="badge">💯 Perfect Century</div>
+                <div class="badge" style="opacity: 0.5;">🔒 Scholar (3 left)</div>
+            </div>
+        </div>
+        <div class="content-card">
+            <h3>Recommended For You</h3>
+            <div class="recommendation-grid">
+                <div class="quiz-card">
+                    <div class="quiz-tag">Difficulty: Medium</div>
+                    <h4>Advanced Python Decorators</h4>
+                    <p>Level up your coding with functional programming concepts.</p>
+                    <button class="btn-start">Start Quiz</button>
+                </div>
+
+                <div class="quiz-card">
+                    <div class="quiz-tag">Difficulty: Easy</div>
+                    <h4>World Capitals Masterclass</h4>
+                    <p>You're great at Geography! Try to beat the global average.</p>
+                    <button class="btn-start">Start Quiz</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

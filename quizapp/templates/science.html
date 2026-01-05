@@ -1,0 +1,137 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizMaster - {{ category.name }} Quiz</title>
+    <link rel="stylesheet" href="{% static 'css/science.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Decorations -->
+    {% for deco in category.decorations %}
+        <div class="science-decoration {{ deco.class }}">{{ deco.symbol }}</div>
+    {% endfor %}
+
+    <!-- Quiz Header -->
+    <header class="quiz-header">
+        <div class="quiz-info">
+            <div class="category-display">
+                <div class="category-icon">
+                    <i class="{{ category.icon }}"></i>
+                </div>
+                <div>
+                    <div class="category-name">{{ category.name }} Quiz</div>
+                    <div style="font-size: 0.9rem; color: #6b7280;">{{ category.level|capfirst }} Level</div>
+                </div>
+            </div>
+            <div class="quiz-timer" id="quizTimer">
+                <i class="fas fa-clock timer-icon"></i>
+                <span id="timeDisplay">{{ category.time|default:"15:00" }}</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="quiz-container">
+        <div class="quiz-progress">
+            <div class="progress-info">
+                <div class="question-count" id="questionCount">Question 1 of {{ category.questions|length }}</div>
+                <div class="score-display" id="scoreDisplay">Score: 0</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-header">
+                <div class="question-number" id="questionNumber">Question 1</div>
+                <div class="question-hint" id="questionHint">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Click an option to select your answer</span>
+                </div>
+            </div>
+            
+            <h2 class="question-text" id="questionText">Loading question...</h2>
+            
+            <img class="question-image" id="questionImage" src="" alt="" style="display: none;">
+            
+            <div class="science-fact" id="scienceFact" style="display: none;">
+                <i class="fas fa-info-circle"></i>
+                <div class="fact-content">
+                    <div class="fact-title" id="factTitle">Did You Know?</div>
+                    <p id="factText"></p>
+                </div>
+            </div>
+            
+            <div class="options-grid" id="optionsContainer"></div>
+
+            <div class="quiz-actions">
+                <button class="action-btn" id="hintBtn"><i class="fas fa-lightbulb"></i> Show Hint</button>
+                <button class="action-btn" id="bookmarkBtn"><i class="far fa-bookmark"></i> Bookmark</button>
+                <button class="action-btn" id="flagBtn"><i class="far fa-flag"></i> Flag Question</button>
+            </div>
+        </div>
+
+        <div class="category-stats">
+            {% for stat, value in category.stats.items %}
+                <div class="stat-item">
+                    <div class="stat-value" id="{{ stat }}">{{ value }}</div>
+                    <div class="stat-label">{{ stat|capfirst }}</div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="quiz-navigation">
+            <button class="nav-btn btn-prev" id="prevBtn" disabled><i class="fas fa-arrow-left"></i> Previous</button>
+            <button class="nav-btn btn-next" id="nextBtn">Next <i class="fas fa-arrow-right"></i></button>
+            <button class="nav-btn btn-submit" id="submitBtn" style="display: none;">Submit Quiz <i class="fas fa-paper-plane"></i></button>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="resultsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>{{ category.name }} Quiz Completed!</h2>
+                <p>Your knowledge has been tested!</p>
+            </div>
+            <div class="modal-body">
+                <div class="result-summary">
+                    <div class="score-circle" id="scoreCircle"></div>
+                    <div class="badge" id="scienceBadge">{{ category.badge }}</div>
+                </div>
+                <div class="result-stats">
+                    <div class="result-stat">
+                        <h3 id="correctAnswers">0</h3>
+                        <p>Correct Answers</p>
+                    </div>
+                    <div class="result-stat">
+                        <h3 id="totalQuestions">{{ category.questions|length }}</h3>
+                        <p>Total Questions</p>
+                    </div>
+                    <div class="result-stat">
+                        <h3 id="timeTaken">00:00</h3>
+                        <p>Time Taken</p>
+                    </div>
+                    <div class="result-stat">
+                        <h3 id="accuracyRate">0%</h3>
+                        <p>Accuracy Rate</p>
+                    </div>
+                </div>
+                
+                <div class="result-feedback" id="resultFeedback"></div>
+                
+                <div class="modal-actions">
+                    <button class="modal-btn btn-retry" id="retryBtn"><i class="fas fa-redo"></i> Retry Quiz</button>
+                    <button class="modal-btn btn-review" id="reviewBtn"><i class="fas fa-chart-bar"></i> View Analysis</button>
+                    <button class="modal-btn btn-home" id="homeBtn"><i class="fas fa-home"></i> Back to Categories</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/science.js' %}"></script>
+</body>
+</html>

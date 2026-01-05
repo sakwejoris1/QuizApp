@@ -1,0 +1,1023 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizMaster - Geography Quiz</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{% static 'css/Geogrphy.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+</head>
+<body>
+    <!-- Geography Decorations -->
+    <div class="geography-decoration globe">🌍</div>
+    <div class="geography-decoration mountain">⛰️</div>
+
+    <!-- Quiz Header -->
+    <header class="quiz-header">
+        <div class="quiz-info">
+            <div class="category-display">
+                <div class="category-icon">
+                    <i class="fas fa-globe-americas"></i>
+                </div>
+                <div>
+                    <div class="category-name">Geography Quiz</div>
+                    <div style="font-size: 0.9rem; color: #6b7280;">Explore the World</div>
+                </div>
+            </div>
+            <div class="quiz-timer" id="quizTimer">
+                <i class="fas fa-clock timer-icon"></i>
+                <span id="timeDisplay">15:00</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="quiz-container">
+        <!-- Progress Section -->
+        <div class="quiz-progress">
+            <div class="progress-info">
+                <div class="question-count" id="questionCount">Question 1 of 10</div>
+                <div class="score-display" id="scoreDisplay">Score: 0</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="question-card">
+            <div class="question-header">
+                <div class="question-number" id="questionNumber">Question 1</div>
+                <div class="question-hint" id="questionHint">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Click an option to select your answer</span>
+                </div>
+            </div>
+            
+            <h2 class="question-text" id="questionText">Loading question...</h2>
+            
+            <!-- Question Image -->
+            <img class="question-image" id="questionImage" src="" alt="" style="display: none;">
+            
+            <!-- Map Visualization (for some questions) -->
+            <div class="map-container" id="mapContainer">
+                <div class="map-title">
+                    <i class="fas fa-map"></i>
+                    <span id="mapTitle">Interactive Map</span>
+                </div>
+                <div class="map-grid" id="mapGrid">
+                    <!-- Map cells will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Geography Fact -->
+            <div class="geography-fact" id="geographyFact" style="display: none;">
+                <i class="fas fa-info-circle"></i>
+                <div class="fact-content">
+                    <div class="fact-title" id="factTitle">Geography Insight</div>
+                    <p id="factText"></p>
+                </div>
+            </div>
+            
+            <!-- World Regions Display -->
+            <div class="region-tags" id="regionTags" style="display: none;">
+                <!-- Region tags will be populated by JavaScript -->
+            </div>
+            
+            <div class="options-grid" id="optionsContainer">
+                <!-- Options will be populated by JavaScript -->
+            </div>
+
+            <!-- Quiz Actions -->
+            <div class="quiz-actions">
+                <button class="action-btn" id="hintBtn">
+                    <i class="fas fa-lightbulb"></i> Show Hint
+                </button>
+                <button class="action-btn" id="bookmarkBtn">
+                    <i class="far fa-bookmark"></i> Bookmark
+                </button>
+                <button class="action-btn" id="mapBtn">
+                    <i class="fas fa-map"></i> Show Map
+                </button>
+            </div>
+        </div>
+
+        <!-- Geography Stats -->
+        <div class="geography-stats">
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-mountain"></i>
+                </div>
+                <div class="stat-value" id="countriesCount">0</div>
+                <div class="stat-label">Countries</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-water"></i>
+                </div>
+                <div class="stat-value" id="capitalsCount">0</div>
+                <div class="stat-label">Capitals</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-landmark"></i>
+                </div>
+                <div class="stat-value" id="landmarksCount">0</div>
+                <div class="stat-label">Landmarks</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <div class="stat-value" id="oceansCount">0</div>
+                <div class="stat-label">Oceans</div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="quiz-navigation">
+            <button class="nav-btn btn-prev" id="prevBtn" disabled>
+                <i class="fas fa-arrow-left"></i> Previous
+            </button>
+            <button class="nav-btn btn-next" id="nextBtn">
+                Next <i class="fas fa-arrow-right"></i>
+            </button>
+            <button class="nav-btn btn-submit" id="submitBtn" style="display: none;">
+                Submit Quiz <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </main>
+
+    <!-- Results Modal -->
+    <div class="modal-overlay" id="resultsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Geography Quiz Completed!</h2>
+                <p>You've explored the world with your knowledge</p>
+            </div>
+            <div class="modal-body">
+                <div class="result-summary">
+                    <div class="score-circle" id="scoreCircle">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                    <div class="badge" id="geographyBadge">Global Explorer</div>
+                </div>
+                
+                <div class="result-stats">
+                    <div class="result-stat">
+                        <h3 id="correctAnswers">0</h3>
+                        <p>Correct Answers</p>
+                    </div>
+                    <div class="result-stat">
+                        <h3 id="totalQuestions">0</h3>
+                        <p>Total Questions</p>
+                    </div>
+                    <div class="result-stat">
+                        <h3 id="timeTaken">00:00</h3>
+                        <p>Time Taken</p>
+                    </div>
+                    <div class="result-stat">
+                        <h3 id="accuracyRate">0%</h3>
+                        <p>Accuracy Rate</p>
+                    </div>
+                </div>
+                
+                <div class="result-feedback" id="resultFeedback">
+                    <!-- Feedback will be populated by JavaScript -->
+                </div>
+                
+                <!-- World Map Achievement -->
+                <div class="geography-fact" id="achievement" style="display: none;">
+                    <i class="fas fa-trophy"></i>
+                    <div class="fact-content">
+                        <div class="fact-title" id="achievementTitle">Quiz Achievement</div>
+                        <p id="achievementText"></p>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="modal-btn btn-retry" id="retryBtn">
+                        <i class="fas fa-redo"></i> Retry Quiz
+                    </button>
+                    <button class="modal-btn btn-review" id="reviewBtn">
+                        <i class="fas fa-globe-americas"></i> World Map
+                    </button>
+                    <button class="modal-btn btn-home" id="homeBtn">
+                        <i class="fas fa-home"></i> Back to Categories
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+        // Geography Quiz Questions Database
+        const geographyQuestions = [
+            {
+                id: 1,
+                question: "What is the capital city of Japan?",
+                options: ["Beijing", "Seoul", "Tokyo", "Bangkok"],
+                correctAnswer: 2,
+                hint: "It's the most populous metropolitan area in the world.",
+                explanation: "Tokyo is the capital and largest city of Japan. With over 37 million residents, it's the most populous metropolitan area in the world and a major global financial center.",
+                category: "Capitals",
+                image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                fact: {
+                    title: "Tokyo Fact",
+                    text: "Tokyo was originally a small fishing village called Edo. It became Japan's capital in 1868 during the Meiji Restoration."
+                },
+                region: "Asia",
+                mapType: "country",
+                mapData: { country: "Japan", continent: "Asia" }
+            },
+            {
+                id: 2,
+                question: "Which is the longest river in the world?",
+                options: ["Amazon River", "Nile River", "Yangtze River", "Mississippi River"],
+                correctAnswer: 1,
+                hint: "It flows through northeastern Africa.",
+                explanation: "The Nile River is traditionally considered the longest river in the world at approximately 6,650 km (4,130 miles). It flows through 11 countries in northeastern Africa.",
+                category: "Rivers",
+                image: "https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                fact: {
+                    title: "River Fact",
+                    text: "The Amazon River carries more water than the next 7 largest rivers combined!"
+                },
+                region: "Africa",
+                mapType: "river",
+                mapData: { river: "Nile", continent: "Africa" }
+            },
+            {
+                id: 3,
+                question: "What is the largest desert in the world?",
+                options: ["Sahara Desert", "Arabian Desert", "Gobi Desert", "Antarctic Desert"],
+                correctAnswer: 3,
+                hint: "It's actually a cold desert located at the South Pole.",
+                explanation: "The Antarctic Desert is the largest desert in the world, covering approximately 14 million square kilometers. Despite being covered in ice, it receives very little precipitation.",
+                category: "Deserts",
+                image: "https://images.unsplash.com/photo-1599159340656-a51a48f76b44?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                fact: {
+                    title: "Desert Fact",
+                    text: "The Sahara Desert is expanding southward at a rate of about 48 kilometers per year due to climate change."
+                },
+                region: "Antarctica",
+                mapType: "continent",
+                mapData: { continent: "Antarctica" }
+            },
+            {
+                id: 4,
+                question: "Which country has the largest population in the world?",
+                options: ["India", "United States", "China", "Indonesia"],
+                correctAnswer: 2,
+                hint: "Located in East Asia, it's the world's most populous country.",
+                explanation: "China has the world's largest population with over 1.4 billion people. However, India is projected to surpass China in population in the near future.",
+                category: "Countries",
+                image: "https://images.unsplash.com/photo-1528164344705-47542687000d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                fact: {
+                    title: "Population Fact",
+                    text: "China's population is greater than the combined populations of North America, South America, and Australia!"
+                },
+                region: "Asia",
+                mapType: "country",
+                mapData: { country: "China", continent: "Asia" }
+            },
+            {
+                id: 5,
+                question: "What is the smallest country in the world?",
+                options: ["Monaco", "Vatican City", "San Marino", "Liechtenstein"],
+                correctAnswer: 1,
+                hint: "It's located within Rome, Italy.",
+                explanation: "Vatican City is the smallest country in the world, with an area of just 0.49 square kilometers (0.19 square miles). It's an independent city-state surrounded by Rome, Italy.",
+                category: "Countries",
+                image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                fact: {
+                    title: "Country Fact",
+                    text: "Vatican City has the world's smallest population of any independent state - only about 800 people!"
+                },
+                region: "Europe",
+                mapType: "country",
+                mapData: { country: "Vatican", continent: "Europe" }
+            },
+            {
+                id: 6,
+                question: "Which ocean is the largest and deepest?",
+                options: ["Atlantic Ocean", "Indian Ocean", "Pacific Ocean", "Arctic Ocean"],
+                correctAnswer: 2,
+                hint: "It covers about one-third of the Earth's surface.",
+                explanation: "The Pacific Ocean is the largest and deepest ocean, covering approximately 63 million square miles (165 million square kilometers). It contains the Mariana Trench, the deepest point on Earth.",
+                category: "Oceans",
+                image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                fact: {
+                    title: "Ocean Fact",
+                    text: "The Pacific Ocean is so large that all the world's continents could fit into it with room to spare!"
+                },
+                region: "Pacific",
+                mapType: "ocean",
+                mapData: { ocean: "Pacific" }
+            },
+            {
+                id: 7,
+                question: "What is the highest mountain in the world?",
+                options: ["K2", "Kangchenjunga", "Mount Everest", "Lhotse"],
+                correctAnswer: 2,
+                hint: "Located in the Himalayas on the border between Nepal and Tibet.",
+                explanation: "Mount Everest is the highest mountain above sea level, with its summit at 8,848.86 meters (29,031.7 feet). It's part of the Himalayan mountain range.",
+                category: "Mountains",
+                image: "https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                fact: {
+                    title: "Mountain Fact",
+                    text: "Mount Everest grows about 4 mm higher every year due to tectonic plate movement!"
+                },
+                region: "Asia",
+                mapType: "mountain",
+                mapData: { mountain: "Everest", continent: "Asia" }
+            },
+            {
+                id: 8,
+                question: "Which continent is also a country?",
+                options: ["Antarctica", "Australia", "Europe", "South America"],
+                correctAnswer: 1,
+                hint: "It's the smallest continent but a large country.",
+                explanation: "Australia is both a continent and a country. It's the world's smallest continent but the sixth-largest country by total area.",
+                category: "Continents",
+                image: "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                fact: {
+                    title: "Continent Fact",
+                    text: "Australia is the only continent without an active volcano and is also the driest inhabited continent!"
+                },
+                region: "Oceania",
+                mapType: "continent",
+                mapData: { continent: "Australia" }
+            },
+            {
+                id: 9,
+                question: "What is the capital of Brazil?",
+                options: ["Rio de Janeiro", "São Paulo", "Brasília", "Salvador"],
+                correctAnswer: 2,
+                hint: "It's a planned city built in the 1960s.",
+                explanation: "Brasília is the capital of Brazil, built from scratch in the late 1950s and inaugurated in 1960. It's known for its modernist architecture and urban planning.",
+                category: "Capitals",
+                image: "https://images.unsplash.com/photo-1544984243-ec57ea16fe25?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                fact: {
+                    title: "Capital Fact",
+                    text: "Brasília was built in just 41 months and is a UNESCO World Heritage Site for its innovative urban design!"
+                },
+                region: "South America",
+                mapType: "city",
+                mapData: { city: "Brasília", country: "Brazil", continent: "South America" }
+            },
+            {
+                id: 10,
+                question: "Which African country is known as the 'Pearl of Africa'?",
+                options: ["Kenya", "Uganda", "Tanzania", "Ethiopia"],
+                correctAnswer: 1,
+                hint: "It's home to Lake Victoria, Africa's largest lake.",
+                explanation: "Uganda is often called the 'Pearl of Africa' due to its stunning natural beauty, diverse wildlife, and rich cultural heritage. Winston Churchill coined this term in 1908.",
+                category: "Countries",
+                image: "https://images.unsplash.com/photo-1573843989-c9d7ad0b4d83?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                fact: {
+                    title: "African Fact",
+                    text: "Uganda is one of the few places in the world where you can see mountain gorillas in their natural habitat!"
+                },
+                region: "Africa",
+                mapType: "country",
+                mapData: { country: "Uganda", continent: "Africa" }
+            }
+        ];
+
+        // Quiz State
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let score = 0;
+        let timeLeft = 15 * 60; // 15 minutes in seconds
+        let timerInterval = null;
+        let quizCompleted = false;
+        let bookmarkedQuestions = new Set();
+        let categoryStats = {
+            countries: 0,
+            capitals: 0,
+            landmarks: 0,
+            oceans: 0
+        };
+
+        // DOM Elements
+        const questionText = document.getElementById('questionText');
+        const questionImage = document.getElementById('questionImage');
+        const geographyFact = document.getElementById('geographyFact');
+        const factTitle = document.getElementById('factTitle');
+        const factText = document.getElementById('factText');
+        const mapContainer = document.getElementById('mapContainer');
+        const mapTitle = document.getElementById('mapTitle');
+        const mapGrid = document.getElementById('mapGrid');
+        const regionTags = document.getElementById('regionTags');
+        const questionHint = document.getElementById('questionHint');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const questionCount = document.getElementById('questionCount');
+        const questionNumber = document.getElementById('questionNumber');
+        const progressFill = document.getElementById('progressFill');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const quizTimer = document.getElementById('quizTimer');
+        const countriesCount = document.getElementById('countriesCount');
+        const capitalsCount = document.getElementById('capitalsCount');
+        const landmarksCount = document.getElementById('landmarksCount');
+        const oceansCount = document.getElementById('oceansCount');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const hintBtn = document.getElementById('hintBtn');
+        const bookmarkBtn = document.getElementById('bookmarkBtn');
+        const mapBtn = document.getElementById('mapBtn');
+        const resultsModal = document.getElementById('resultsModal');
+        const scoreCircle = document.getElementById('scoreCircle');
+        const geographyBadge = document.getElementById('geographyBadge');
+        const correctAnswers = document.getElementById('correctAnswers');
+        const totalQuestions = document.getElementById('totalQuestions');
+        const timeTaken = document.getElementById('timeTaken');
+        const accuracyRate = document.getElementById('accuracyRate');
+        const resultFeedback = document.getElementById('resultFeedback');
+        const achievement = document.getElementById('achievement');
+        const achievementTitle = document.getElementById('achievementTitle');
+        const achievementText = document.getElementById('achievementText');
+        const retryBtn = document.getElementById('retryBtn');
+        const reviewBtn = document.getElementById('reviewBtn');
+        const homeBtn = document.getElementById('homeBtn');
+
+        // Initialize Quiz
+        function initQuiz() {
+            // Initialize user answers array
+            userAnswers = Array(geographyQuestions.length).fill(null);
+            
+            // Calculate category statistics
+            calculateCategoryStats();
+            
+            // Start quiz
+            updateScore();
+            updateCategoryStats();
+            startTimer();
+            loadQuestion(currentQuestion);
+            updateNavigationButtons();
+            updateActionButtons();
+        }
+
+        // Calculate category statistics
+        function calculateCategoryStats() {
+            categoryStats = { countries: 0, capitals: 0, landmarks: 0, oceans: 0 };
+            geographyQuestions.forEach(q => {
+                if (q.category === "Countries") categoryStats.countries++;
+                if (q.category === "Capitals") categoryStats.capitals++;
+                if (q.category === "Landmarks") categoryStats.landmarks++;
+                if (q.category === "Oceans") categoryStats.oceans++;
+            });
+        }
+
+        // Load Question
+        function loadQuestion(index) {
+            const question = geographyQuestions[index];
+            
+            // Update question text
+            questionText.textContent = question.question;
+            questionHint.querySelector('span').textContent = question.hint;
+            questionCount.textContent = `Question ${index + 1} of ${geographyQuestions.length}`;
+            questionNumber.textContent = `Question ${index + 1}`;
+            
+            // Show/hide question image
+            if (question.image) {
+                questionImage.src = question.image;
+                questionImage.style.display = 'block';
+            } else {
+                questionImage.style.display = 'none';
+            }
+            
+            // Show/hide geography fact
+            if (question.fact) {
+                factTitle.textContent = question.fact.title;
+                factText.textContent = question.fact.text;
+                geographyFact.style.display = 'flex';
+            } else {
+                geographyFact.style.display = 'none';
+            }
+            
+            // Show/hide region tags
+            if (question.region) {
+                regionTags.innerHTML = `
+                    <div class="region-tag">
+                        <i class="fas fa-globe-americas"></i>
+                        ${question.region}
+                    </div>
+                    <div class="region-tag">
+                        <i class="fas fa-tag"></i>
+                        ${question.category}
+                    </div>
+                `;
+                regionTags.style.display = 'flex';
+            } else {
+                regionTags.style.display = 'none';
+            }
+            
+            // Hide map initially
+            mapContainer.classList.remove('active');
+            
+            // Clear options
+            optionsContainer.innerHTML = '';
+            
+            // Create options with country flags for relevant questions
+            question.options.forEach((option, optionIndex) => {
+                const optionItem = document.createElement('div');
+                optionItem.className = 'option-item';
+                optionItem.dataset.index = optionIndex;
+                
+                // Check if this option was previously selected
+                if (userAnswers[index] === optionIndex) {
+                    optionItem.classList.add('selected');
+                }
+                
+                // Check if we're reviewing and this is the correct answer
+                if (quizCompleted && optionIndex === question.correctAnswer) {
+                    optionItem.classList.add('correct');
+                }
+                
+                // Check if we're reviewing and this was a wrong answer
+                if (quizCompleted && userAnswers[index] === optionIndex && optionIndex !== question.correctAnswer) {
+                    optionItem.classList.add('incorrect');
+                }
+                
+                // Get flag emoji for country/capital questions
+                let flagEmoji = "";
+                if (question.category === "Countries" || question.category === "Capitals") {
+                    flagEmoji = getFlagEmoji(option);
+                }
+                
+                optionItem.innerHTML = `
+                    <div class="option-marker">${String.fromCharCode(65 + optionIndex)}</div>
+                    <div class="option-text">${option} ${flagEmoji}</div>
+                    ${quizCompleted ? `<div class="option-explanation">${optionIndex === question.correctAnswer ? question.explanation : ''}</div>` : ''}
+                `;
+                
+                // Only add click event if quiz is not completed
+                if (!quizCompleted) {
+                    optionItem.addEventListener('click', () => selectOption(optionIndex));
+                }
+                
+                optionsContainer.appendChild(optionItem);
+            });
+            
+            // Update progress bar
+            updateProgress();
+            
+            // Update action buttons
+            updateActionButtons();
+        }
+
+        // Get flag emoji for a country/city
+        function getFlagEmoji(location) {
+            const flagMap = {
+                "Japan": "🇯🇵",
+                "Tokyo": "🇯🇵",
+                "China": "🇨🇳",
+                "Beijing": "🇨🇳",
+                "South Korea": "🇰🇷",
+                "Seoul": "🇰🇷",
+                "Thailand": "🇹🇭",
+                "Bangkok": "🇹🇭",
+                "Brazil": "🇧🇷",
+                "Brasília": "🇧🇷",
+                "Rio de Janeiro": "🇧🇷",
+                "São Paulo": "🇧🇷",
+                "Salvador": "🇧🇷",
+                "India": "🇮🇳",
+                "United States": "🇺🇸",
+                "Indonesia": "🇮🇩",
+                "Monaco": "🇲🇨",
+                "Vatican City": "🇻🇦",
+                "San Marino": "🇸🇲",
+                "Liechtenstein": "🇱🇮",
+                "Uganda": "🇺🇬",
+                "Kenya": "🇰🇪",
+                "Tanzania": "🇹🇿",
+                "Ethiopia": "🇪🇹",
+                "Australia": "🇦🇺",
+                "Nepal": "🇳🇵",
+                "Tibet": "🇨🇳"
+            };
+            
+            return flagMap[location] || "";
+        }
+
+        // Create interactive map
+        function createMap(question) {
+            mapGrid.innerHTML = '';
+            mapTitle.textContent = `${question.category} Location`;
+            
+            if (question.mapType === "continent") {
+                const continents = ["Asia", "Africa", "North America", "South America", "Europe", "Australia", "Antarctica"];
+                continents.forEach(continent => {
+                    const cell = document.createElement('div');
+                    cell.className = `map-cell continent ${continent === question.mapData.continent ? 'selected' : ''}`;
+                    cell.textContent = continent.substring(0, 3);
+                    cell.title = continent;
+                    mapGrid.appendChild(cell);
+                });
+            } else if (question.mapType === "country") {
+                // Simplified world map with selected country highlighted
+                const countries = ["USA", "CAN", "BRA", "ARG", "FRA", "GER", "RUS", "CHN", "IND", "AUS", "JPN", "ZAF", "EGY", "NGA"];
+                countries.forEach(country => {
+                    const cell = document.createElement('div');
+                    cell.className = `map-cell continent`;
+                    if (question.mapData.country === "Japan" && country === "JPN") {
+                        cell.classList.add('selected');
+                        cell.style.background = 'var(--geography-green)';
+                        cell.style.color = 'white';
+                    }
+                    if (question.mapData.country === "China" && country === "CHN") {
+                        cell.classList.add('selected');
+                        cell.style.background = 'var(--geography-green)';
+                        cell.style.color = 'white';
+                    }
+                    if (question.mapData.country === "Uganda" && country === "NGA") {
+                        cell.classList.add('selected');
+                        cell.style.background = 'var(--geography-green)';
+                        cell.style.color = 'white';
+                    }
+                    cell.textContent = country;
+                    cell.title = country;
+                    mapGrid.appendChild(cell);
+                });
+            } else if (question.mapType === "ocean") {
+                const oceans = ["Pacific", "Atlantic", "Indian", "Arctic", "Southern"];
+                oceans.forEach(ocean => {
+                    const cell = document.createElement('div');
+                    cell.className = `map-cell ocean ${ocean === question.mapData.ocean ? 'selected' : ''}`;
+                    cell.textContent = ocean.substring(0, 3);
+                    cell.title = ocean;
+                    mapGrid.appendChild(cell);
+                });
+            }
+        }
+
+        // Select Option
+        function selectOption(optionIndex) {
+            // Clear previous selection
+            document.querySelectorAll('.option-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Mark selected option
+            const selectedOption = document.querySelector(`.option-item[data-index="${optionIndex}"]`);
+            selectedOption.classList.add('selected');
+            
+            // Store answer
+            userAnswers[currentQuestion] = optionIndex;
+            
+            // Update score
+            updateScore();
+            
+            // Enable next button if not already enabled
+            if (currentQuestion < geographyQuestions.length - 1) {
+                nextBtn.disabled = false;
+            } else {
+                submitBtn.style.display = 'inline-flex';
+                nextBtn.style.display = 'none';
+            }
+        }
+
+        // Update Progress
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / geographyQuestions.length) * 100;
+            progressFill.style.width = `${progress}%`;
+        }
+
+        // Update Score
+        function updateScore() {
+            // Calculate current score
+            score = 0;
+            userAnswers.forEach((answer, index) => {
+                if (answer !== null && answer === geographyQuestions[index].correctAnswer) {
+                    score++;
+                }
+            });
+            
+            // Update display
+            scoreDisplay.textContent = `Score: ${score}`;
+        }
+
+        // Update Category Stats
+        function updateCategoryStats() {
+            countriesCount.textContent = categoryStats.countries;
+            capitalsCount.textContent = categoryStats.capitals;
+            landmarksCount.textContent = categoryStats.landmarks;
+            oceansCount.textContent = categoryStats.oceans;
+        }
+
+        // Update Action Buttons
+        function updateActionButtons() {
+            // Update bookmark button
+            if (bookmarkedQuestions.has(currentQuestion)) {
+                bookmarkBtn.classList.add('active');
+                bookmarkBtn.innerHTML = `<i class="fas fa-bookmark"></i> Bookmarked`;
+            } else {
+                bookmarkBtn.classList.remove('active');
+                bookmarkBtn.innerHTML = `<i class="far fa-bookmark"></i> Bookmark`;
+            }
+            
+            // Update map button based on question type
+            const hasMap = geographyQuestions[currentQuestion].mapType;
+            if (hasMap) {
+                mapBtn.style.display = 'inline-flex';
+            } else {
+                mapBtn.style.display = 'none';
+            }
+        }
+
+        // Update Navigation Buttons
+        function updateNavigationButtons() {
+            prevBtn.disabled = currentQuestion === 0;
+            
+            if (currentQuestion === geographyQuestions.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'inline-flex';
+            } else {
+                nextBtn.style.display = 'inline-flex';
+                submitBtn.style.display = 'none';
+            }
+            
+            // Enable next button if current question is answered
+            if (userAnswers[currentQuestion] !== null && currentQuestion < geographyQuestions.length - 1) {
+                nextBtn.disabled = false;
+            }
+        }
+
+        // Timer Functions
+        function startTimer() {
+            updateTimeDisplay();
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimeDisplay();
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                }
+                
+                // Add warning animation when less than 2 minutes
+                if (timeLeft <= 120) {
+                    quizTimer.classList.add('timer-critical');
+                }
+            }, 1000);
+        }
+
+        function updateTimeDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Navigation Functions
+        function nextQuestion() {
+            if (currentQuestion < geographyQuestions.length - 1) {
+                currentQuestion++;
+                loadQuestion(currentQuestion);
+                updateNavigationButtons();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion(currentQuestion);
+                updateNavigationButtons();
+            }
+        }
+
+        // Submit Quiz and Show Results
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            quizCompleted = true;
+            
+            // Calculate final results
+            const totalQuestionsCount = geographyQuestions.length;
+            const correctAnswersCount = userAnswers.filter((answer, index) => 
+                answer === geographyQuestions[index].correctAnswer
+            ).length;
+            const percentage = Math.round((correctAnswersCount / totalQuestionsCount) * 100);
+            const timeUsed = (15 * 60) - timeLeft;
+            
+            // Determine badge based on score
+            let badge = "";
+            let badgeColor = "";
+            if (percentage >= 90) {
+                badge = "🌍 Geography Master";
+                badgeColor = "#f59e0b";
+            } else if (percentage >= 70) {
+                badge = "🗺️ World Explorer";
+                badgeColor = "#10b981";
+            } else if (percentage >= 50) {
+                badge = "🧭 Geography Enthusiast";
+                badgeColor = "#3b82f6";
+            } else {
+                badge = "🧳 Global Traveler";
+                badgeColor = "#6b7280";
+            }
+            
+            // Update results modal
+            scoreCircle.innerHTML = `
+                <div class="score-percentage">${percentage}%</div>
+                <div class="score-text">Score</div>
+            `;
+            
+            geographyBadge.textContent = badge;
+            geographyBadge.style.background = badgeColor;
+            
+            correctAnswers.textContent = correctAnswersCount;
+            totalQuestions.textContent = totalQuestionsCount;
+            timeTaken.textContent = formatTime(timeUsed);
+            accuracyRate.textContent = `${percentage}%`;
+            
+            // Set feedback based on score
+            let feedback = "";
+            if (percentage >= 90) {
+                feedback = "🎉 Outstanding! You have exceptional geographical knowledge. You could navigate the world blindfolded!";
+                achievementText.textContent = "You've demonstrated expert knowledge of world geography across all continents!";
+                achievementTitle.textContent = "🏆 Geography Champion";
+            } else if (percentage >= 70) {
+                feedback = "👍 Excellent work! You have a strong understanding of world geography and could plan international travels with ease.";
+                achievementText.textContent = "Great job exploring different regions and geographical features!";
+                achievementTitle.textContent = "🌟 Geography Expert";
+            } else if (percentage >= 50) {
+                feedback = "😊 Good job! You have a solid foundation in geography. Keep exploring the world through maps and facts!";
+                achievementText.textContent = "You're on your way to becoming a geography expert!";
+                achievementTitle.textContent = "🧭 Geography Learner";
+            } else {
+                feedback = "💪 Every explorer starts somewhere! The world is full of amazing places to discover. Keep learning!";
+                achievementText.textContent = "The journey of a thousand miles begins with a single step. Keep exploring!";
+                achievementTitle.textContent = "🌱 Geography Beginner";
+            }
+            
+            // Add category breakdown
+            const categoryCorrect = {
+                countries: 0,
+                capitals: 0,
+                landmarks: 0,
+                oceans: 0
+            };
+            
+            userAnswers.forEach((answer, index) => {
+                if (answer === geographyQuestions[index].correctAnswer) {
+                    const category = geographyQuestions[index].category;
+                    if (category === "Countries") categoryCorrect.countries++;
+                    if (category === "Capitals") categoryCorrect.capitals++;
+                    if (category === "Landmarks") categoryCorrect.landmarks++;
+                    if (category === "Oceans") categoryCorrect.oceans++;
+                }
+            });
+            
+            feedback += `<br><br><strong>Knowledge Areas:</strong><br>`;
+            feedback += `🗺️ Countries: ${categoryCorrect.countries}/${categoryStats.countries}<br>`;
+            feedback += `🏛️ Capitals: ${categoryCorrect.capitals}/${categoryStats.capitals}<br>`;
+            feedback += `⛰️ Landmarks: ${categoryCorrect.landmarks}/${categoryStats.landmarks}<br>`;
+            feedback += `🌊 Oceans: ${categoryCorrect.oceans}/${categoryStats.oceans}`;
+            
+            resultFeedback.innerHTML = feedback;
+            
+            // Show achievement
+            achievement.style.display = 'flex';
+            
+            // Show modal
+            resultsModal.classList.add('active');
+            
+            // Reload current question to show correct/incorrect indicators
+            loadQuestion(currentQuestion);
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Event Listeners
+        prevBtn.addEventListener('click', prevQuestion);
+        nextBtn.addEventListener('click', nextQuestion);
+        submitBtn.addEventListener('click', submitQuiz);
+
+        hintBtn.addEventListener('click', () => {
+            const hintText = geographyQuestions[currentQuestion].hint;
+            questionHint.querySelector('span').textContent = hintText;
+            
+            // Show temporary animation
+            questionHint.style.animation = 'none';
+            setTimeout(() => {
+                questionHint.style.animation = 'correctPulse 0.5s ease';
+            }, 10);
+        });
+
+        bookmarkBtn.addEventListener('click', () => {
+            if (bookmarkedQuestions.has(currentQuestion)) {
+                bookmarkedQuestions.delete(currentQuestion);
+            } else {
+                bookmarkedQuestions.add(currentQuestion);
+            }
+            updateActionButtons();
+        });
+
+        mapBtn.addEventListener('click', () => {
+            if (mapContainer.classList.contains('active')) {
+                mapContainer.classList.remove('active');
+                mapBtn.innerHTML = `<i class="fas fa-map"></i> Show Map`;
+            } else {
+                createMap(geographyQuestions[currentQuestion]);
+                mapContainer.classList.add('active');
+                mapBtn.innerHTML = `<i class="fas fa-times"></i> Hide Map`;
+            }
+        });
+
+        retryBtn.addEventListener('click', () => {
+            // Reset quiz state
+            currentQuestion = 0;
+            userAnswers = Array(geographyQuestions.length).fill(null);
+            score = 0;
+            timeLeft = 15 * 60;
+            quizCompleted = false;
+            bookmarkedQuestions.clear();
+            
+            // Reset UI
+            resultsModal.classList.remove('active');
+            submitBtn.style.display = 'none';
+            nextBtn.style.display = 'inline-flex';
+            quizTimer.classList.remove('timer-critical');
+            mapContainer.classList.remove('active');
+            
+            // Restart quiz
+            updateScore();
+            startTimer();
+            loadQuestion(currentQuestion);
+            updateNavigationButtons();
+        });
+
+        reviewBtn.addEventListener('click', () => {
+            resultsModal.classList.remove('active');
+            // Show world map visualization
+            alert("World map visualization would show your performance by region!");
+        });
+
+        homeBtn.addEventListener('click', () => {
+            window.location.href = 'categories.html';
+        });
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (quizCompleted) return;
+            
+            switch(e.key) {
+                case 'ArrowLeft':
+                    if (!prevBtn.disabled) prevQuestion();
+                    break;
+                case 'ArrowRight':
+                    if (!nextBtn.disabled) nextQuestion();
+                    break;
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                    const optionIndex = parseInt(e.key) - 1;
+                    if (optionIndex >= 0 && optionIndex < 4) {
+                        selectOption(optionIndex);
+                    }
+                    break;
+                case ' ':
+                case 'Enter':
+                    if (currentQuestion < geographyQuestions.length - 1) {
+                        nextQuestion();
+                    } else {
+                        submitQuiz();
+                    }
+                    break;
+                case 'b':
+                    bookmarkBtn.click();
+                    break;
+                case 'm':
+                    mapBtn.click();
+                    break;
+                case 'h':
+                    hintBtn.click();
+                    break;
+            }
+        });
+
+        // Initialize the quiz
+        initQuiz();
+  
+
+homeBtn.addEventListener('click', () => {
+    window.location.href = "{% url 'quiz_categories' %}";
+});
+</script>
+
+</body>
+</html>

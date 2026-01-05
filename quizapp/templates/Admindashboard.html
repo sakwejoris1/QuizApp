@@ -1,0 +1,541 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizNova Admin Dashboard</title>
+
+    <!-- Fonts & Icons -->
+     <link rel="stylesheet" href="{% static 'css/Addmin.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="#" class="logo">
+                <i class="fas fa-brain"></i>
+                <div class="logo-text">
+                    <span>QuizNova</span>
+                    <span>Admin Panel</span>
+                </div>
+            </a>
+            <button class="toggle-sidebar" id="toggleSidebar"><i class="fas fa-chevron-left"></i></button>
+        </div>
+        <nav class="menu">
+            <div class="menu-section">
+                <h4 class="menu-section-title">Main Menu</h4>
+                <ul class="menu-list">
+                    <li class="menu-item"><a href="#dashboard" class="menu-link active"><i class="fas fa-tachometer-alt menu-icon"></i><span class="menu-text">Dashboard</span></a></li>
+                    <li class="menu-item"><a href="#analytics" class="menu-link"><i class="fas fa-chart-line menu-icon"></i><span class="menu-text">Analytics</span></a></li>
+                    <li class="menu-item"><a href="#users" class="menu-link"><i class="fas fa-users menu-icon"></i><span class="menu-text">Users</span><span class="menu-badge">24</span></a></li>
+                </ul>
+            </div>
+            <div class="menu-section">
+                <h4 class="menu-section-title">Content Management</h4>
+                <ul class="menu-list">
+                    <li class="menu-item"><a href="{% url 'recent_quiz' %}" class="menu-link"><i class="fas fa-question-circle menu-icon"></i><span class="menu-text">Quizzes</span><span class="menu-badge">5</span></a></li>
+                    <li class="menu-item"><a href="{% url 'recent_quiz' %}" class="menu-link"><i class="fas fa-list-ol menu-icon"></i><span class="menu-text">Questions</span></a></li>
+                    <li class="menu-item"><a href="{% url 'quiz_categories' %}" class="menu-link"><i class="fas fa-folder menu-icon"></i><span class="menu-text">Categories</span></a></li>
+                </ul>
+            </div>
+            <div class="menu-section">
+                <h4 class="menu-section-title">System</h4>
+                <ul class="menu-list">
+                    <li class="menu-item"><a href="#settings" class="menu-link"><i class="fas fa-cog menu-icon"></i><span class="menu-text">Settings</span></a></li>
+                    <li class="menu-item"><a href="#reports" class="menu-link"><i class="fas fa-flag menu-icon"></i><span class="menu-text">Reports</span></a></li>
+                    <li class="menu-item"><a href="#logs" class="menu-link"><i class="fas fa-history menu-icon"></i><span class="menu-text">Activity Logs</span></a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="admin-profile">
+                <img src="{% static 'img/ep.jpeg' %}" alt="Admin" class="admin-avatar">
+                <div class="admin-info"><h4>Epie Kajeta</h4><p>Super Admin</p></div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <header class="topbar">
+            <div class="topbar-left"><h1>Dashboard Overview</h1></div>
+            <div class="topbar-right">
+                <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Search..."></div>
+                <div class="user-menu"><img src="{% static 'img/d.jpeg' %}" alt="User" class="user-avatar"><span class="user-name">Dave Weby</span></div>
+            </div>
+        </header>
+
+        <div class="content-wrapper">
+           <div class="content-wrapper">
+
+    <!-- Quick Stats -->
+    <div class="quick-stats">
+        <div class="quick-stat">
+            <div class="quick-stat-icon" style="background: #dbeafe; color: #3b82f6;">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="quick-stat-info">
+                <h4>15 min</h4>
+                <p>Avg. Session</p>
+            </div>
+        </div>
+        
+        <div class="quick-stat">
+            <div class="quick-stat-icon" style="background: #fef3c7; color: #d97706;">
+                <i class="fas fa-chart-pie"></i>
+            </div>
+            <div class="quick-stat-info">
+                <h4>68%</h4>
+                <p>Completion Rate</p>
+            </div>
+        </div>
+        
+        <div class="quick-stat">
+            <div class="quick-stat-icon" style="background: #d1fae5; color: #10b981;">
+                <i class="fas fa-mobile-alt"></i>
+            </div>
+            <div class="quick-stat-info">
+                <h4>72%</h4>
+                <p>Mobile Users</p>
+            </div>
+        </div>
+        
+        <div class="quick-stat">
+            <div class="quick-stat-icon" style="background: #f3e8ff; color: #8b5cf6;">
+                <i class="fas fa-globe"></i>
+            </div>
+            <div class="quick-stat-info">
+                <h4>45</h4>
+                <p>Countries</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-cards">
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon users">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-trend positive">
+                    <i class="fas fa-arrow-up"></i>
+                    12.5%
+                </div>
+            </div>
+            <h3 class="stat-value">12,458</h3>
+            <p class="stat-label">Total Users</p>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon quizzes">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <div class="stat-trend positive">
+                    <i class="fas fa-arrow-up"></i>
+                    8.2%
+                </div>
+            </div>
+            <h3 class="stat-value">2,847</h3>
+            <p class="stat-label">Active Quizzes</p>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon questions">
+                    <i class="fas fa-list-ol"></i>
+                </div>
+                <div class="stat-trend positive">
+                    <i class="fas fa-arrow-up"></i>
+                    15.7%
+                </div>
+            </div>
+            <h3 class="stat-value">156,234</h3>
+            <p class="stat-label">Questions</p>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-header">
+                <div class="stat-icon revenue">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="stat-trend negative">
+                    <i class="fas fa-arrow-down"></i>
+                    3.2%
+                </div>
+            </div>
+            <h3 class="stat-value">$12,458</h3>
+            <p class="stat-label">Monthly Revenue</p>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-section">
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>User Activity Overview</h3>
+                <div class="chart-actions">
+                    <button class="chart-btn active">Daily</button>
+                    <button class="chart-btn">Weekly</button>
+                    <button class="chart-btn">Monthly</button>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="activityChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>Category Distribution</h3>
+            </div>
+            <div class="chart-container">
+                <canvas id="categoryChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Users -->
+    <div class="activity-section">
+        <!-- Your Recent Users table here -->
+    </div>
+
+    <!-- Recent Quizzes -->
+    <div class="activity-section">
+        <!-- Your Recent Quizzes table here -->
+    </div>
+
+</div>
+
+        </div>
+    </main>
+        <script>
+        // Sidebar Toggle
+        const toggleSidebar = document.getElementById('toggleSidebar');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+
+        toggleSidebar.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+            
+            // Change icon based on state
+            const icon = toggleSidebar.querySelector('i');
+            if (sidebar.classList.contains('collapsed')) {
+                icon.className = 'fas fa-chevron-right';
+            } else {
+                icon.className = 'fas fa-chevron-left';
+            }
+        });
+
+        // Mobile Menu Toggle
+        const menuToggle = document.createElement('button');
+        menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+        menuToggle.className = 'mobile-menu-toggle';
+        menuToggle.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        `;
+
+        document.body.appendChild(menuToggle);
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+
+        // Handle responsive behavior
+        function handleResponsive() {
+            if (window.innerWidth <= 992) {
+                menuToggle.style.display = 'flex';
+                sidebar.classList.remove('collapsed');
+                mainContent.classList.remove('expanded');
+                toggleSidebar.querySelector('i').className = 'fas fa-chevron-left';
+            } else {
+                menuToggle.style.display = 'none';
+                sidebar.classList.remove('active');
+            }
+        }
+
+        window.addEventListener('resize', handleResponsive);
+        handleResponsive();
+
+        // Menu Active State
+        const menuLinks = document.querySelectorAll('.menu-link');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                if (!link.classList.contains('active')) {
+                    menuLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Charts
+        // Activity Chart
+        const activityCtx = document.getElementById('activityChart').getContext('2d');
+        const activityChart = new Chart(activityCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Active Users',
+                    data: [1200, 1900, 1700, 2100, 2400, 2800, 3200],
+                    borderColor: '#4f46e5',
+                    backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }, {
+                    label: 'Quizzes Taken',
+                    data: [800, 1200, 1000, 1400, 1600, 2000, 2500],
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Category Chart
+        const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+        const categoryChart = new Chart(categoryCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Science', 'History', 'Geography', 'Entertainment', 'Sports', 'Technology'],
+                datasets: [{
+                    data: [25, 15, 20, 22, 8, 10],
+                    backgroundColor: [
+                        '#3b82f6',
+                        '#ef4444',
+                        '#10b981',
+                        '#8b5cf6',
+                        '#f59e0b',
+                        '#6366f1'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    }
+                }
+            }
+        });
+
+        // Chart Period Toggle
+        const chartBtns = document.querySelectorAll('.chart-btn');
+        chartBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                chartBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Update chart data based on period
+                const period = btn.textContent;
+                let newData;
+                
+                if (period === 'Daily') {
+                    newData = [1200, 1900, 1700, 2100, 2400, 2800, 3200];
+                } else if (period === 'Weekly') {
+                    newData = [8000, 12000, 15000, 11000, 13000, 16000, 14000];
+                } else {
+                    newData = [45000, 52000, 48000, 56000, 61000, 58000, 65000];
+                }
+                
+                activityChart.data.datasets[0].data = newData;
+                activityChart.update();
+            });
+        });
+
+        // Notification dropdown simulation
+        const notificationIcon = document.querySelector('.notification-icon');
+        notificationIcon.addEventListener('click', () => {
+            alert('You have 3 new notifications:\n1. New user registered\n2. Quiz report generated\n3. System update available');
+        });
+
+        // User menu dropdown
+        const userMenu = document.querySelector('.user-menu');
+        userMenu.addEventListener('click', () => {
+            const dropdown = document.createElement('div');
+            dropdown.innerHTML = `
+                <div style="
+                    position: absolute;
+                    top: 60px;
+                    right: 30px;
+                    background: white;
+                    border-radius: 8px;
+                    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+                    width: 200px;
+                    z-index: 1000;
+                    border: 1px solid var(--border-color);
+                ">
+                    <div style="padding: 15px; border-bottom: 1px solid var(--border-color);">
+                        <div style="font-weight: 600;">Alex Johnson</div>
+                        <div style="font-size: 0.85rem; color: #6b7280;">Super Admin</div>
+                    </div>
+                    <div style="padding: 10px 0;">
+                        <a href="#" style="display: block; padding: 10px 15px; text-decoration: none; color: var(--dark-color); transition: background 0.3s;">
+                            <i class="fas fa-user" style="margin-right: 10px;"></i> Profile
+                        </a>
+                        <a href="#" style="display: block; padding: 10px 15px; text-decoration: none; color: var(--dark-color); transition: background 0.3s;">
+                            <i class="fas fa-cog" style="margin-right: 10px;"></i> Settings
+                        </a>
+                        <a href="#" style="display: block; padding: 10px 15px; text-decoration: none; color: var(--dark-color); transition: background 0.3s;">
+                            <i class="fas fa-sign-out-alt" style="margin-right: 10px;"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            // Remove existing dropdown if any
+            const existingDropdown = document.querySelector('.user-dropdown');
+            if (existingDropdown) {
+                existingDropdown.remove();
+            }
+            
+            dropdown.className = 'user-dropdown';
+            document.body.appendChild(dropdown);
+            
+            // Close dropdown when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', function closeDropdown(e) {
+                    if (!userMenu.contains(e.target) && !dropdown.contains(e.target)) {
+                        dropdown.remove();
+                        document.removeEventListener('click', closeDropdown);
+                    }
+                });
+            }, 100);
+        });
+
+        // Action buttons functionality
+        const actionButtons = document.querySelectorAll('.action-btn');
+        actionButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const type = this.classList.contains('edit') ? 'edit' : 
+                            this.classList.contains('delete') ? 'delete' : 'view';
+                
+                const row = this.closest('tr');
+                const name = row.querySelector('strong').textContent;
+                
+                if (type === 'edit') {
+                    alert(`Edit ${name}`);
+                } else if (type === 'delete') {
+                    if (confirm(`Are you sure you want to delete ${name}?`)) {
+                        row.style.opacity = '0.5';
+                        setTimeout(() => {
+                            row.remove();
+                        }, 300);
+                    }
+                } else {
+                    alert(`View details for ${name}`);
+                }
+            });
+        });
+
+        // Export functionality
+        const exportBtn = document.querySelector('.btn-secondary');
+        exportBtn.addEventListener('click', () => {
+            alert('Exporting user data...');
+            // In a real app, this would trigger a file download
+        });
+
+        // Add user button
+        const addUserBtn = document.querySelectorAll('.btn-primary')[1];
+        addUserBtn.addEventListener('click', () => {
+            alert('Open user creation form...');
+        });
+
+        // Create quiz button
+        const createQuizBtn = document.querySelectorAll('.btn-primary')[2];
+        createQuizBtn.addEventListener('click', () => {
+            alert('Open quiz creation form...');
+        });
+
+        // Pagination
+        const paginationBtns = document.querySelectorAll('.pagination-btn');
+        paginationBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (!this.classList.contains('active')) {
+                    paginationBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    // In a real app, this would load the corresponding page
+                }
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.querySelector('.search-box input');
+        searchInput.addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                alert(`Searching for: ${this.value}`);
+                this.value = '';
+            }
+        });
+
+        // Initialize tooltips for action buttons
+        actionButtons.forEach(btn => {
+            const type = btn.classList.contains('edit') ? 'Edit' : 
+                        btn.classList.contains('delete') ? 'Delete' : 'View';
+            btn.title = type;
+        });
+
+        // Auto-refresh data simulation
+        setInterval(() => {
+            // Update user count with slight random variation
+            const userCountElement = document.querySelectorAll('.stat-value')[0];
+            const currentCount = parseInt(userCountElement.textContent.replace(',', ''));
+            const newCount = currentCount + Math.floor(Math.random() * 10);
+            userCountElement.textContent = newCount.toLocaleString();
+        }, 10000); // Update every 10 seconds
+
+
+    </script>
+</body>
+</html>

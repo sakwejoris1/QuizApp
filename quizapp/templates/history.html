@@ -1,0 +1,776 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizNova - History Quiz</title>
+
+    <!-- Fonts & Icons -->
+     <link rel="stylesheet" href="{% static 'css/hostory.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- OPTIONAL: Quiz CSS -->
+    {# <link rel="stylesheet" href="{% static 'css/history.css' %}"> #}
+</head>
+<body>
+
+<!-- Quiz Header -->
+<header class="quiz-header">
+    <div class="quiz-info">
+        <div class="category-display" id="categoryDisplay"></div>
+        <div class="quiz-timer" id="quizTimer">
+            <i class="fas fa-clock"></i>
+            <span id="timeDisplay">15:00</span>
+        </div>
+    </div>
+</header>
+
+<!-- Main Quiz Container -->
+<main class="quiz-container">
+
+    <!-- Progress -->
+    <div class="quiz-progress">
+        <div class="progress-info">
+            <div class="question-count" id="questionCount">Question 1 of 10</div>
+            <div class="score-display" id="scoreDisplay">Score: 0</div>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+    </div>
+
+    <!-- Question Card -->
+    <div class="question-card">
+        <div class="question-header">
+            <div class="question-number" id="questionNumber">Question 1</div>
+            <div class="question-hint" id="questionHint">
+                <i class="fas fa-lightbulb"></i>
+                <span>Click an option to select your answer</span>
+            </div>
+        </div>
+
+        <h2 class="question-text" id="questionText">Loading question...</h2>
+
+        <div class="options-grid" id="optionsContainer"></div>
+
+        <div class="quiz-actions">
+            <button class="action-btn" id="hintBtn">
+                <i class="fas fa-lightbulb"></i> Show Hint
+            </button>
+            <button class="action-btn" id="flagBtn">
+                <i class="far fa-flag"></i> Flag Question
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="quiz-navigation">
+        <button class="nav-btn btn-prev" id="prevBtn" disabled>
+            <i class="fas fa-arrow-left"></i> Previous
+        </button>
+        <button class="nav-btn btn-next" id="nextBtn">
+            Next <i class="fas fa-arrow-right"></i>
+        </button>
+        <button class="nav-btn btn-submit" id="submitBtn" style="display:none;">
+            Submit Quiz <i class="fas fa-paper-plane"></i>
+        </button>
+    </div>
+</main>
+
+<!-- Results Modal -->
+<div class="modal-overlay" id="resultsModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Quiz Completed!</h2>
+            <p>Here's how you performed</p>
+        </div>
+
+        <div class="modal-body">
+            <div class="score-circle" id="scoreCircle"></div>
+
+            <div class="result-stats">
+                <div><h3 id="correctAnswers">0</h3><p>Correct</p></div>
+                <div><h3 id="totalQuestions">0</h3><p>Total</p></div>
+                <div><h3 id="timeTaken">00:00</h3><p>Time</p></div>
+                <div><h3 id="scorePercentage">0%</h3><p>Score</p></div>
+            </div>
+
+            <div class="result-feedback" id="resultFeedback"></div>
+
+            <div class="modal-actions">
+                <button class="modal-btn" id="retryBtn"><i class="fas fa-redo"></i> Retry</button>
+                <button class="modal-btn" id="reviewBtn"><i class="fas fa-list"></i> Review</button>
+                <button class="modal-btn" id="homeBtn"><i class="fas fa-home"></i> Categories</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+        const CATEGORIES_URL = "{% url 'quiz_categories' %}";
+        // Quiz Questions Database (by category)
+
+    
+        const quizQuestions = {
+            
+            "Science": [
+                {
+                    question: "What is the chemical symbol for Gold?",
+                    options: ["Go", "Gd", "Au", "Ag"],
+                    correctAnswer: 2,
+                    hint: "This element's symbol comes from its Latin name 'Aurum'."
+                },
+                {
+                    question: "Which planet is known as the Red Planet?",
+                    options: ["Venus", "Mars", "Jupiter", "Saturn"],
+                    correctAnswer: 1,
+                    hint: "It's named after the Roman god of war."
+                },
+                {
+                    question: "What is the hardest natural substance on Earth?",
+                    options: ["Gold", "Iron", "Diamond", "Platinum"],
+                    correctAnswer: 2,
+                    hint: "It's made of carbon atoms arranged in a crystal structure."
+                },
+                {
+                    question: "Which gas do plants absorb from the atmosphere?",
+                    options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"],
+                    correctAnswer: 2,
+                    hint: "Plants use this gas during photosynthesis."
+                },
+                {
+                    question: "What is the unit of electrical resistance?",
+                    options: ["Volt", "Ampere", "Ohm", "Watt"],
+                    correctAnswer: 2,
+                    hint: "Named after a German physicist."
+                }
+            ],
+            "History": [
+                {
+                    question: "In which year did World War II end?",
+                    options: ["1943", "1944", "1945", "1946"],
+                    correctAnswer: 2,
+                    hint: "It ended after the surrender of Japan."
+                },
+                {
+                    question: "Who was the first President of the United States?",
+                    options: ["Thomas Jefferson", "Abraham Lincoln", "George Washington", "John Adams"],
+                    correctAnswer: 2,
+                    hint: "He's often called the 'Father of His Country'."
+                },
+                {
+                    question: "Which ancient civilization built the pyramids?",
+                    options: ["Greeks", "Romans", "Egyptians", "Mayans"],
+                    correctAnswer: 2,
+                    hint: "They were built as tombs for pharaohs."
+                },
+                {
+                    question: "Who painted the Mona Lisa?",
+                    options: ["Michelangelo", "Raphael", "Leonardo da Vinci", "Van Gogh"],
+                    correctAnswer: 2,
+                    hint: "Italian Renaissance polymath."
+                },
+                {
+                    question: "What year did the Titanic sink?",
+                    options: ["1905", "1912", "1918", "1923"],
+                    correctAnswer: 1,
+                    hint: "It sank on its maiden voyage."
+                }
+             ],
+            "Geography": [
+                {
+                    question: "What is the capital of Japan?",
+                    options: ["Beijing", "Seoul", "Tokyo", "Bangkok"],
+                    correctAnswer: 2,
+                    hint: "It's the most populous metropolitan area in the world."
+                },
+                {
+                    question: "Which is the longest river in the world?",
+                    options: ["Amazon", "Nile", "Yangtze", "Mississippi"],
+                    correctAnswer: 1,
+                    hint: "Located in Africa."
+                },
+                {
+                    question: "What is the largest desert in the world?",
+                    options: ["Sahara", "Arabian", "Gobi", "Antarctic"],
+                    correctAnswer: 3,
+                    hint: "It's actually a cold desert."
+                },
+                {
+                    question: "Which country has the most population?",
+                    options: ["India", "United States", "China", "Indonesia"],
+                    correctAnswer: 2,
+                    hint: "Located in East Asia."
+                },
+                {
+                    question: "What is the smallest country in the world?",
+                    options: ["Monaco", "Vatican City", "San Marino", "Liechtenstein"],
+                    correctAnswer: 1,
+                    hint: "It's located within Rome, Italy."
+                }
+            ],
+            "Entertainment": [
+                {
+                    question: "Who played Iron Man in the Marvel Cinematic Universe?",
+                    options: ["Chris Evans", "Robert Downey Jr.", "Chris Hemsworth", "Mark Ruffalo"],
+                    correctAnswer: 1,
+                    hint: "He's known for his comeback story."
+                },
+                {
+                    question: "Which band performed the song 'Bohemian Rhapsody'?",
+                    options: ["The Beatles", "Queen", "Led Zeppelin", "Pink Floyd"],
+                    correctAnswer: 1,
+                    hint: "Fronted by Freddie Mercury."
+                },
+                {
+                    question: "Who directed the movie 'Inception'?",
+                    options: ["Steven Spielberg", "Christopher Nolan", "James Cameron", "Quentin Tarantino"],
+                    correctAnswer: 1,
+                    hint: "Known for mind-bending plots."
+                },
+                {
+                    question: "Which TV show features characters named Ross, Rachel, and Monica?",
+                    options: ["Seinfeld", "How I Met Your Mother", "The Office", "Friends"],
+                    correctAnswer: 3,
+                    hint: "The one with the coffee shop."
+                },
+                {
+                    question: "Who sang 'Rolling in the Deep'?",
+                    options: ["Taylor Swift", "Adele", "Beyoncé", "Rihanna"],
+                    correctAnswer: 1,
+                    hint: "British singer with a powerful voice."
+                }
+            ],
+            "Sports": [
+                {
+                    question: "Which country won the FIFA World Cup in 2018?",
+                    options: ["Germany", "Brazil", "France", "Argentina"],
+                    correctAnswer: 2,
+                    hint: "European country, beat Croatia in the final."
+                },
+                {
+                    question: "How many players are on a basketball team?",
+                    options: ["5", "6", "7", "8"],
+                    correctAnswer: 0,
+                    hint: "On the court at one time."
+                },
+                {
+                    question: "Which sport uses a shuttlecock?",
+                    options: ["Tennis", "Badminton", "Squash", "Table Tennis"],
+                    correctAnswer: 1,
+                    hint: "Played with racquets across a net."
+                },
+                {
+                    question: "Who has won the most Olympic gold medals?",
+                    options: ["Usain Bolt", "Michael Phelps", "Carl Lewis", "Simone Biles"],
+                    correctAnswer: 1,
+                    hint: "American swimmer."
+                },
+                {
+                    question: "In which city were the 2016 Summer Olympics held?",
+                    options: ["London", "Tokyo", "Rio de Janeiro", "Beijing"],
+                    correctAnswer: 2,
+                    hint: "First South American city to host."
+                }
+            ],
+            "Technology": [
+                {
+                    question: "What does 'HTML' stand for?",
+                    options: ["Hyper Text Markup Language", "High Tech Modern Language", "Hyper Transfer Markup Language", "Home Tool Markup Language"],
+                    correctAnswer: 0,
+                    hint: "Used for creating web pages."
+                },
+                {
+                    question: "Which company created the iPhone?",
+                    options: ["Samsung", "Google", "Apple", "Microsoft"],
+                    correctAnswer: 2,
+                    hint: "Founded by Steve Jobs."
+                },
+                {
+                    question: "What does 'URL' stand for?",
+                    options: ["Uniform Resource Locator", "Universal Resource Link", "Uniform Reference Locator", "Universal Reference Link"],
+                    correctAnswer: 0,
+                    hint: "Web address."
+                },
+                {
+                    question: "Which programming language is known for its use in web development?",
+                    options: ["Python", "Java", "JavaScript", "C++"],
+                    correctAnswer: 2,
+                    hint: "Not to be confused with Java."
+                },
+                {
+                    question: "What does 'CPU' stand for?",
+                    options: ["Central Processing Unit", "Computer Processing Unit", "Central Program Unit", "Computer Program Unit"],
+                    correctAnswer: 0,
+                    hint: "The brain of the computer."
+                }
+            ],
+            "Mathematics": [
+                {
+                    question: "What is the value of π (pi) to two decimal places?",
+                    options: ["3.12", "3.14", "3.16", "3.18"],
+                    correctAnswer: 1,
+                    hint: "Approximately 22/7."
+                },
+                {
+                    question: "What is 15 squared?",
+                    options: ["225", "250", "275", "300"],
+                    correctAnswer: 0,
+                    hint: "15 × 15."
+                },
+                {
+                    question: "What is the square root of 144?",
+                    options: ["10", "11", "12", "13"],
+                    correctAnswer: 2,
+                    hint: "12 × 12 = 144."
+                },
+                {
+                    question: "How many degrees are in a right angle?",
+                    options: ["45", "90", "180", "360"],
+                    correctAnswer: 1,
+                    hint: "Forms an 'L' shape."
+                },
+                {
+                    question: "What is 25% of 200?",
+                    options: ["25", "50", "75", "100"],
+                    correctAnswer: 1,
+                    hint: "One quarter of 200."
+                }
+            ],
+            "Literature": [
+                {
+                    question: "Who wrote 'Romeo and Juliet'?",
+                    options: ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"],
+                    correctAnswer: 1,
+                    hint: "English playwright and poet."
+                },
+                {
+                    question: "In which novel would you find the character 'Sherlock Holmes'?",
+                    options: ["Dracula", "The Great Gatsby", "Pride and Prejudice", "A Study in Scarlet"],
+                    correctAnswer: 3,
+                    hint: "Created by Arthur Conan Doyle."
+                },
+                {
+                    question: "Who wrote '1984'?",
+                    options: ["George Orwell", "Aldous Huxley", "Ray Bradbury", "J.R.R. Tolkien"],
+                    correctAnswer: 0,
+                    hint: "Author of 'Animal Farm'."
+                },
+                {
+                    question: "What is the first book of the Harry Potter series?",
+                    options: ["The Chamber of Secrets", "The Prisoner of Azkaban", "The Philosopher's Stone", "The Goblet of Fire"],
+                    correctAnswer: 2,
+                    hint: "Also called 'Sorcerer's Stone' in the US."
+                },
+                {
+                    question: "Who wrote 'To Kill a Mockingbird'?",
+                    options: ["Harper Lee", "J.D. Salinger", "F. Scott Fitzgerald", "Ernest Hemingway"],
+                    correctAnswer: 0,
+                    hint: "Published in 1960."
+                }
+            ]
+        };
+
+        // Quiz State
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let score = 0;
+        let timeLeft = 15 * 60; // 15 minutes in seconds
+        let timerInterval = null;
+        let quizCompleted = false;
+        let selectedCategory = null;
+        let currentQuestions = [];
+
+        // DOM Elements
+        const categoryDisplay = document.getElementById('categoryDisplay');
+        const questionText = document.getElementById('questionText');
+        const questionHint = document.getElementById('questionHint');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const questionCount = document.getElementById('questionCount');
+        const questionNumber = document.getElementById('questionNumber');
+        const progressFill = document.getElementById('progressFill');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const quizTimer = document.getElementById('quizTimer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const hintBtn = document.getElementById('hintBtn');
+        const flagBtn = document.getElementById('flagBtn');
+        const resultsModal = document.getElementById('resultsModal');
+        const scoreCircle = document.getElementById('scoreCircle');
+        const correctAnswers = document.getElementById('correctAnswers');
+        const totalQuestions = document.getElementById('totalQuestions');
+        const timeTaken = document.getElementById('timeTaken');
+        const scorePercentage = document.getElementById('scorePercentage');
+        const resultFeedback = document.getElementById('resultFeedback');
+        const retryBtn = document.getElementById('retryBtn');
+        const reviewBtn = document.getElementById('reviewBtn');
+        const homeBtn = document.getElementById('homeBtn');
+
+        // Initialize Quiz
+        function initQuiz() {
+            // Get selected category from localStorage
+            const savedCategory = localStorage.getItem('selectedCategory');
+            if (!savedCategory) {
+                alert('No category selected! Redirecting to categories page.');
+                window.location.href = 'categories.html';
+                return;
+            }
+
+            selectedCategory = JSON.parse(savedCategory);
+            currentQuestions = quizQuestions[selectedCategory.name] || quizQuestions["Science"];
+            
+            // Initialize user answers array
+            userAnswers = Array(currentQuestions.length).fill(null);
+            
+            // Display category
+            displayCategory();
+            
+            // Start quiz
+            updateScore();
+            startTimer();
+            loadQuestion(currentQuestion);
+            updateNavigationButtons();
+        }
+
+        // Display Category
+        function displayCategory() {
+            const categoryIconMap = {
+                "Science": "fas fa-flask",
+                "History": "fas fa-landmark",
+                "Geography": "fas fa-globe-americas",
+                "Entertainment": "fas fa-film",
+                "Sports": "fas fa-futbol",
+                "Technology": "fas fa-laptop-code",
+                "Mathematics": "fas fa-calculator",
+                "Literature": "fas fa-book-open"
+            };
+
+            const categoryColorMap = {
+                // "Science": "#3b82f6",
+               "History": "#ef4444",
+                "Geography": "#10b981",
+                "Entertainment": "#8b5cf6",
+                "Sports": "#f59e0b",
+                "Technology": "#6366f1",
+                "Mathematics": "#ec4899",
+                "Literature": "#14b8a6"
+            };
+
+            const icon = categoryIconMap[selectedCategory.name] || "fas fa-question-circle";
+            const color = categoryColorMap[selectedCategory.name] || "#4f46e5";
+
+            categoryDisplay.innerHTML = `
+                <div class="category-icon" style="background: ${color};">
+                    <i class="${icon}"></i>
+                </div>
+                <div>
+                    <div class="category-name">${selectedCategory.name} Quiz</div>
+                    <div style="font-size: 0.9rem; color: #6b7280;">${selectedCategory.difficulty.charAt(0).toUpperCase() + selectedCategory.difficulty.slice(1)} Level</div>
+                </div>
+            `;
+        }
+
+        // Load Question
+        function loadQuestion(index) {
+            const question = currentQuestions[index];
+            
+            // Update question text
+            questionText.textContent = question.question;
+            questionHint.querySelector('span').textContent = question.hint;
+            questionCount.textContent = `Question ${index + 1} of ${currentQuestions.length}`;
+            questionNumber.textContent = `Question ${index + 1}`;
+            
+            // Clear options
+            optionsContainer.innerHTML = '';
+            
+            // Create options
+            question.options.forEach((option, optionIndex) => {
+                const optionItem = document.createElement('div');
+                optionItem.className = 'option-item';
+                optionItem.dataset.index = optionIndex;
+                
+                // Check if this option was previously selected
+                if (userAnswers[index] === optionIndex) {
+                    optionItem.classList.add('selected');
+                }
+                
+                // Check if we're reviewing and this is the correct answer
+                if (quizCompleted && optionIndex === question.correctAnswer) {
+                    optionItem.classList.add('correct');
+                }
+                
+                // Check if we're reviewing and this was a wrong answer
+                if (quizCompleted && userAnswers[index] === optionIndex && optionIndex !== question.correctAnswer) {
+                    optionItem.classList.add('incorrect');
+                }
+                
+                optionItem.innerHTML = `
+                    <div class="option-marker">${String.fromCharCode(65 + optionIndex)}</div>
+                    <div class="option-text">${option}</div>
+                `;
+                
+                // Only add click event if quiz is not completed
+                if (!quizCompleted) {
+                    optionItem.addEventListener('click', () => selectOption(optionIndex));
+                }
+                
+                optionsContainer.appendChild(optionItem);
+            });
+            
+            // Update progress bar
+            updateProgress();
+        }
+
+        // Select Option
+        function selectOption(optionIndex) {
+            // Clear previous selection
+            document.querySelectorAll('.option-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Mark selected option
+            const selectedOption = document.querySelector(`.option-item[data-index="${optionIndex}"]`);
+            selectedOption.classList.add('selected');
+            
+            // Store answer
+            userAnswers[currentQuestion] = optionIndex;
+            
+            // Update score if answer is correct
+            updateScore();
+            
+            // Enable next button if not already enabled
+            if (currentQuestion < currentQuestions.length - 1) {
+                nextBtn.disabled = false;
+            } else {
+                submitBtn.style.display = 'inline-flex';
+                nextBtn.style.display = 'none';
+            }
+        }
+
+        // Update Progress
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / currentQuestions.length) * 100;
+            progressFill.style.width = `${progress}%`;
+        }
+
+        // Update Score
+        function updateScore() {
+            // Calculate current score
+            score = 0;
+            userAnswers.forEach((answer, index) => {
+                if (answer !== null && answer === currentQuestions[index].correctAnswer) {
+                    score++;
+                }
+            });
+            
+            // Update display
+            scoreDisplay.textContent = `Score: ${score}`;
+        }
+
+        // Update Navigation Buttons
+        function updateNavigationButtons() {
+            prevBtn.disabled = currentQuestion === 0;
+            
+            if (currentQuestion === currentQuestions.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'inline-flex';
+            } else {
+                nextBtn.style.display = 'inline-flex';
+                submitBtn.style.display = 'none';
+            }
+            
+            // Enable next button if current question is answered
+            if (userAnswers[currentQuestion] !== null && currentQuestion < currentQuestions.length - 1) {
+                nextBtn.disabled = false;
+            }
+        }
+
+        // Timer Functions
+        function startTimer() {
+            updateTimeDisplay();
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimeDisplay();
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                }
+                
+                // Add warning animation when less than 2 minutes
+                if (timeLeft <= 120) {
+                    quizTimer.classList.add('timer-critical');
+                }
+            }, 1000);
+        }
+
+        function updateTimeDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Navigation Functions
+        function nextQuestion() {
+            if (currentQuestion < currentQuestions.length - 1) {
+                currentQuestion++;
+                loadQuestion(currentQuestion);
+                updateNavigationButtons();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion(currentQuestion);
+                updateNavigationButtons();
+            }
+        }
+
+        // Submit Quiz and Show Results
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            quizCompleted = true;
+            
+            // Calculate final results
+            const totalQuestionsCount = currentQuestions.length;
+            const correctAnswersCount = userAnswers.filter((answer, index) => 
+                answer === currentQuestions[index].correctAnswer
+            ).length;
+            const percentage = Math.round((correctAnswersCount / totalQuestionsCount) * 100);
+            const timeUsed = (15 * 60) - timeLeft;
+            
+            // Update results modal
+            scoreCircle.innerHTML = `
+                <div class="score-percentage">${percentage}%</div>
+                <div class="score-text">Score</div>
+            `;
+            
+            correctAnswers.textContent = correctAnswersCount;
+            totalQuestions.textContent = totalQuestionsCount;
+            timeTaken.textContent = formatTime(timeUsed);
+            scorePercentage.textContent = `${percentage}%`;
+            
+            // Set feedback based on score
+            let feedback = "";
+            let feedbackColor = "";
+            
+            if (percentage >= 90) {
+                feedback = "🎉 Outstanding! You're a true expert in this category!";
+                feedbackColor = "#10b981";
+            } else if (percentage >= 70) {
+                feedback = "👍 Great job! You have excellent knowledge in this area.";
+                feedbackColor = "#3b82f6";
+            } else if (percentage >= 50) {
+                feedback = "😊 Good effort! You have a solid understanding.";
+                feedbackColor = "#f59e0b";
+            } else if (percentage >= 30) {
+                feedback = "📚 Keep learning! Review the questions you missed.";
+                feedbackColor = "#ef4444";
+            } else {
+                feedback = "💪 Don't give up! Try again to improve your score.";
+                feedbackColor = "#ef4444";
+            }
+            
+            resultFeedback.innerHTML = feedback;
+            resultFeedback.style.borderLeftColor = feedbackColor;
+            resultFeedback.style.background = feedbackColor + "10";
+            
+            // Show modal
+            resultsModal.classList.add('active');
+            
+            // Reload current question to show correct/incorrect indicators
+            loadQuestion(currentQuestion);
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Event Listeners
+        prevBtn.addEventListener('click', prevQuestion);
+        nextBtn.addEventListener('click', nextQuestion);
+        submitBtn.addEventListener('click', submitQuiz);
+
+        hintBtn.addEventListener('click', () => {
+            const hintText = questionHint.querySelector('span');
+            hintText.textContent = currentQuestions[currentQuestion].hint;
+        });
+
+        flagBtn.addEventListener('click', () => {
+            alert('Question flagged for review!');
+        });
+
+        retryBtn.addEventListener('click', () => {
+            // Reset quiz state
+            currentQuestion = 0;
+            userAnswers = Array(currentQuestions.length).fill(null);
+            score = 0;
+            timeLeft = 15 * 60;
+            quizCompleted = false;
+            
+            // Reset UI
+            resultsModal.classList.remove('active');
+            submitBtn.style.display = 'none';
+            nextBtn.style.display = 'inline-flex';
+            quizTimer.classList.remove('timer-critical');
+            
+            // Restart quiz
+            updateScore();
+            startTimer();
+            loadQuestion(currentQuestion);
+            updateNavigationButtons();
+        });
+
+        reviewBtn.addEventListener('click', () => {
+            resultsModal.classList.remove('active');
+            // User can review answers by navigating through questions
+        });
+
+        homeBtn.addEventListener('click', () => {
+            window.location.href = 'categories.html';
+        });
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (quizCompleted) return;
+            
+            switch(e.key) {
+                case 'ArrowLeft':
+                    if (!prevBtn.disabled) prevQuestion();
+                    break;
+                case 'ArrowRight':
+                    if (!nextBtn.disabled) nextQuestion();
+                    break;
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                    const optionIndex = parseInt(e.key) - 1;
+                    if (optionIndex >= 0 && optionIndex < 4) {
+                        selectOption(optionIndex);
+                    }
+                    break;
+                case ' ':
+                case 'Enter':
+                    if (currentQuestion < currentQuestions.length - 1) {
+                        nextQuestion();
+                    } else {
+                        submitQuiz();
+                    }
+                    break;
+            }
+        });
+
+        // Initialize the quiz
+        initQuiz();
+    </script>
+</body>
+</html>
